@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const Page = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const role = searchParams.get("user");
 
   const userType =
@@ -15,36 +17,52 @@ const Page = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
+  setLoading(true);
 
-    const payload = {
-      ...formData,
-      role: userType, // 👈 send role here
-    };
-
-    console.log(payload);
-
-    // Example API call
-    /*
-    await fetch("/api/login", {
+  try {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      credentials: "include", // 🔥 important
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        role: userType,
+      }),
     });
-    */
-  };
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert(data.message || "Login failed");
+      return;
+    }
+
+    alert("Login successful");
+    router.push("/");
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -80,9 +98,10 @@ const Page = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

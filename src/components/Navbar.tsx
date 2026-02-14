@@ -1,142 +1,147 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, User, Store, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated, logout } = useAuth();
 
-  const handleLogout = async () => {
-    await fetch("/api/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
+  const handleLogout = async () => {
+    await fetch("/api/logout", { method: "POST", credentials: "include" });
     logout();
     window.location.href = "/";
   };
 
+  const navLinks = [
+    { name: "Products", href: "/products" },
+    { name: "Events", href: "/event" },
+    { name: "About Us", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+
   return (
-    <nav className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-semibold text-gray-900">
-            YourLogo
+    <header className="fixed top-0 w-full z-50 transition-all duration-500 ">
+      <nav
+        className={cn(
+          "w-full mx-auto transition-all duration-300 border border-white/10",
+          "bg-brand-secondary/90 backdrop-blur-md text-brand-primary",
+          scrolled ? "shadow-2xl py-3 px-6" : "shadow-sm py-4 px-8"
+        )}
+      >
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
+            YourLogo<span className="text-blue-500">.</span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/products" className="nav-link">
-              Products
-            </Link>
-            <Link href="/about" className="nav-link">
-              About Us
-            </Link>
-            <Link href="/event" className="nav-link">
-              Event
-            </Link>
-            <Link href="/contact" className="nav-link">
-              Contact Us
-            </Link>
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10 transition-all duration-200"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            <div className="w-[1px] h-6 bg-brand-primary/20 mx-3" />
 
             {isAuthenticated ? (
-              <button onClick={handleLogout} className="nav-link text-red-500">
-                Logout
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                <LogOut size={16} /> Logout
               </button>
             ) : (
               <DropdownMenu>
-                <DropdownMenuTrigger className="nav-link outline-none">
-                  Login
+                <DropdownMenuTrigger className="group flex items-center gap-2 bg-brand-primary text-brand-secondary px-6 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 outline-none">
+                  Join Us
+                  <ChevronDown size={14} className="group-data-[state=open]:rotate-180 transition-transform" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-44">
-                  <DropdownMenuItem asChild>
-                    <Link href="/login?user=buyer">Login as User</Link>
+                <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl border-none shadow-xl bg-brand-secondary">
+                  <DropdownMenuItem asChild className="focus:bg-brand-primary/10 rounded-lg cursor-pointer p-3">
+                    <Link href="/login?user=buyer" className="flex items-center gap-3 font-medium">
+                      <div className="p-2 bg-brand-primary rounded-md text-brand-secondary"><User size={16} /></div>
+                      <div className="text-brand-primary">
+                        <p className="text-sm">Login as User</p>
+                        <p className="text-[10px] opacity-60">Personal account</p>
+                      </div>
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/login?user=seller">Login as Seller</Link>
+                  <DropdownMenuItem asChild className="focus:bg-brand-primary/10 rounded-lg cursor-pointer p-3">
+                    <Link href="/login?user=seller" className="flex items-center gap-3 font-medium">
+                      <div className="p-2 bg-brand-primary rounded-md text-brand-secondary"><Store size={16} /></div>
+                      <div className="text-brand-primary">
+                        <p className="text-sm">Login as Seller</p>
+                        <p className="text-[10px] opacity-60">Business account</p>
+                      </div>
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
           </div>
 
-          <button className="md:hidden" onClick={() => setOpen(!open)}>
-            {open ? <X size={24} /> : <Menu size={24} />}
+          {/* Mobile Toggle */}
+          <button 
+            className="md:hidden p-2 rounded-xl bg-brand-primary/5 text-brand-primary"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </div>
 
-      {open && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="flex flex-col px-6 py-4 space-y-4">
-            <Link
-              href="/products"
-              className="mobile-link"
-              onClick={() => setOpen(false)}
-            >
-              Products
-            </Link>
-            <Link
-              href="/become-seller"
-              className="mobile-link"
-              onClick={() => setOpen(false)}
-            >
-              Become a Seller
-            </Link>
-            <Link
-              href="/about"
-              className="mobile-link"
-              onClick={() => setOpen(false)}
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              className="mobile-link"
-              onClick={() => setOpen(false)}
-            >
-              Contact Us
-            </Link>
-
-            <div className="border-t pt-4">
-              {isAuthenticated ? (
-                <button
-                  onClick={handleLogout}
-                  className="mobile-link text-red-500"
-                >
-                  Logout
-                </button>
-              ) : (
-                <>
-                  <Link
-                    href="/login?user=buyer"
-                    className="mobile-link"
-                    onClick={() => setOpen(false)}
-                  >
-                    Login as User
-                  </Link>
-                  <Link
-                    href="/login?user=seller"
-                    className="mobile-link"
-                    onClick={() => setOpen(false)}
-                  >
-                    Login as Seller
-                  </Link>
-                </>
-              )}
-            </div>
+        {/* Mobile Menu */}
+        <div
+          className={cn(
+            "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
+            isOpen ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0"
+          )}
+        >
+          <div className="flex flex-col gap-2 pb-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-between p-4 rounded-xl hover:bg-brand-primary/5 text-lg font-medium"
+              >
+                {link.name}
+                <ArrowRight size={16} className="opacity-40" />
+              </Link>
+            ))}
+            <div className="h-[1px] bg-brand-primary/10 my-2" />
+            {!isAuthenticated ? (
+               <div className="grid grid-cols-2 gap-3 mt-2">
+                 <Link href="/login?user=buyer" className="text-center py-3 rounded-xl border border-brand-primary/20 text-sm font-bold">User Login</Link>
+                 <Link href="/login?user=seller" className="text-center py-3 rounded-xl bg-brand-primary text-brand-secondary text-sm font-bold">Seller Login</Link>
+               </div>
+            ) : (
+              <button onClick={handleLogout} className="w-full text-left p-4 text-red-500 font-bold">Logout</button>
+            )}
           </div>
         </div>
-      )}
-    </nav>
+      </nav>
+    </header>
   );
 }

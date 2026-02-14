@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased scrollbar-hidden bg-brand-primary/10`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased scrollbar-hidden bg-brand-primary`}>
         <QueryProvider>
           <HydrateWrapper>
             <Navbar />

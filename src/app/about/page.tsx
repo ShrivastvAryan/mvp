@@ -13,21 +13,21 @@ const AboutPage = () => {
   ];
 
   return (
-    <main className="min-h-screen justify-center items-center flex bg-brand-primary/10 text-brand-primary">
+    <main className="min-h-screen justify-center items-center flex bg-brand-primary/10 text-brand-secondary">
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
         
         {/* Layout Grid */}
         <div className="flex flex-col md:flex-row justify-between gap-12 items-center">
 
           {/* Left Side: Content Card */}
-          <div className="bg-brand-secondary p-8 md:p-14 w-[60%] rounded-[3rem] shadow-xl border border-brand-primary/5 relative overflow-hidden">
+          <div className=" p-8 md:p-14 w-[60%] rounded-[3rem] border text-brand-secondary border-brand-primary/5 relative overflow-hidden">
             {/* Subtle brand accent ornament */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-full -mr-16 -mt-16" />
             
             <header className="relative z-10">
               <span className="text-xs uppercase tracking-[0.3em] font-bold opacity-50 block mb-2">Our Story</span>
               <h1 className="text-4xl md:text-5xl font-black leading-tight">
-                About <span className="text-brand-primary underline decoration-brand-primary/20 decoration-8 underline-offset-4">Us</span>
+                About <span className="text-brand-secondary underline decoration-brand-primary/20 decoration-8 underline-offset-4">Us</span>
               </h1>
               
               <blockquote className="mt-6 border-l-4 border-brand-primary pl-6 italic text-xl md:text-2xl font-medium opacity-80">
@@ -35,9 +35,9 @@ const AboutPage = () => {
               </blockquote>
             </header>
 
-            <div className="mt-10 space-y-6 text-brand-primary/80 leading-relaxed text-base md:text-lg">
+            <div className="mt-10 space-y-6 text-brand-secondary/80 leading-relaxed text-base md:text-lg">
               <p>
-                <span className="font-black text-brand-primary">Art and craft</span> celebrate the beauty of creating by hand. Every piece reflects the 
+                <span className="font-black text-brand-secondary">Art and craft</span> celebrate the beauty of creating by hand. Every piece reflects the 
                 skill, patience, and creativity of artisans who transform natural materials into meaningful 
                 objects.
               </p>
@@ -57,7 +57,7 @@ const AboutPage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {philosophy.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 group">
-                    <div className="p-2 rounded-lg bg-brand-primary/5 text-brand-primary group-hover:bg-brand-primary group-hover:text-brand-secondary transition-all">
+                    <div className="p-2 rounded-lg bg-brand-primary/5 text-brand-secondary group-hover:bg-brand-primary group-hover:text-brand-secondary transition-all">
                       {item.icon}
                     </div>
                     <span className="text-sm font-bold opacity-70 group-hover:opacity-100 transition-opacity">
@@ -79,14 +79,14 @@ const AboutPage = () => {
               {/* Replace with actual <img> tag */}
               <div className="w-full h-full bg-brand-primary/10 flex flex-col items-center justify-center text-center p-10">
                 <div className="w-20 h-20 bg-brand-primary/20 rounded-full flex items-center justify-center mb-4">
-                  <Sparkles size={40} className="text-brand-primary opacity-40" />
+                  <Sparkles size={40} className="text-brand-secondary opacity-40" />
                 </div>
-                <p className="text-brand-primary/40 font-bold uppercase tracking-widest text-sm">Artisan Showcase Image</p>
+                <p className="text-brand-primary font-bold uppercase tracking-widest text-sm">Artisan Showcase Image</p>
               </div>
 
               {/* Float Badge */}
-              <div className="absolute bottom-8 left-8 right-8 bg-brand-secondary/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-lg">
-                <p className="text-xs font-black uppercase tracking-tighter opacity-50 mb-1">Preserving Heritage</p>
+              <div className="absolute bottom-8 text-brand-primary left-8 right-8 bg-brand-secondary/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-lg">
+                <p className="text-xs font-bold text-brand-primary uppercase tracking-tighter opacity-50 mb-1">Preserving Heritage</p>
                 <p className="text-sm font-medium leading-tight italic">
                   Supporting 50+ local artisan communities worldwide.
                 </p>

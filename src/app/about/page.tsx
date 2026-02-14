@@ -15,10 +15,10 @@ const page = () => {
             </h1>
 
           <h2 className="text-lg font-medium text-brand-secondary mt-4">
-            Crafted by Hands. Connected by Heart
+            "Crafted by Hands. Connected by Heart"
           </h2>
 
-          <div className='space-y-5 text-sm md:text-base text-[#8B1E1E]'>
+          <div className='space-y-3 text-sm md:text-base text-[#8B1E1E]'>
             <p>
               <span className='font-medium text-xl'>Art and craft</span> celebrate the beauty of creating by hand. Every piece reflects the 
               skill, patience, and creativity of artisans who transform natural materials into meaningful 

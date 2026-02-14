@@ -1,124 +1,140 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-
-// const Page = () => {
-//   return (
-//     <>
-//       <div>Page</div>
-//       <Button variant="default" className="font-semibold rounded-2xl">Default Button</Button>
-//       <h1 className="text-2xl font-bold bg-brand-secondary text-brand-primary">Product Page</h1>
-//     </>
-//   );
-// };
 
 const Page = () => {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-    <main className="w-5xl py-12">
-      <p className="text-sm text-brand-secondary/80 mb-8 font-semibold">
-      Home / Art & Craft / <span className="text-brand-secondary">Handmade Wall</span>
-      </p>
+    <div className=" flex justify-center px-6 py-28">
+      <main className="max-w-6xl w-full">
 
-    {/* Main layout */}
-    <div className="flex flex-row gap-15 h-[480px] ">
-
-    {/* Image 1 */}
-      <div className="relative bg-gray-200 rounded-4xl h-full w-[45%] flex items-center justify-center">
-        <span className="text-brand-secondary/50">Art & Craft Image</span>
-      </div>
-
-      {/* Details */}
-      <div className=" p-2 w-full h-full">
-        <h1 className="text-2xl font-semibold text-brand-secondary mb-3 ">
-        Handmade Wall Hanging{" "}  
-        <span className="text-brand-accent font-medium">
-        Natural Fibre
-        </span>
-        </h1>
-
-        {/* price */}
-        <div className="flex items-center gap-4 mb-6">
-          <p className="text-xl font-medium text-red-500">
-          Rs. 1,499
-          </p>
-          <p className="text-black line-through font-medium">
-          Rs. 1,899
-          </p>
-        </div>
-        
-        {/* tagline */}
-        <p className="text-lg italic text-brand-secondary/85 mb-6 font-medium">
-        Handcrafted with love using suitable materials
+        {/* Breadcrumb */}
+        <p className="text-sm text-brand-secondary/70 mb-10 font-medium tracking-wide">
+          Home / Art & Craft /{" "}
+          <span className="text-brand-secondary font-semibold">
+            Handmade Wall Hanging
+          </span>
         </p>
 
-        {/* Buttons */}
-        <div className="mb-6">
-        <button className="bg-brand-secondary text-white px-5 py-2 rounded-md text-sm tracking-wide uppercase">
-        ♡ ADD TO WISHLIST
-        </button>
-        </div>
-        
-        {/* Quantity */}
-        <div className="mb-8">
-          <p className="text-base font-semibold text-black mb-2">
-            Quantity
-          </p>
+        {/* Layout */}
+        <div className="grid grid-cols-2 gap-16">
 
-          <div className="flex items-center gap-3">
-            <button onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-              className="w-10 h-10 border border-gray-300 rounded-md flex items-center justify-center text-base">
-                −
-              </button>
+          {/* LEFT: Image Section */}
+          <div className="flex gap-6">
 
-               <div
-              className="w-10 h-10 border border-gray-300 rounded-md flex items-center justify-center text-sm">
-              {quantity}
-              </div>
+            {/* Thumbnails */}
+            <div className="flex flex-col gap-4">
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="w-20 h-20 bg-brand-accent/40 rounded-2xl cursor-pointer hover:scale-105 hover:bg-brand-accent/60 transition-all duration-300"
+                />
+              ))}
+            </div>
 
-             <button onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 border border-gray-300 rounded-md flex items-center justify-center text-lg">
-                  +
-            </button>
+            {/* Main Image */}
+            <div className="flex-1 bg-brand-accent/30 rounded-4xl shadow-xl flex items-center justify-center h-[520px] border border-brand-secondary/10">
+              <span className="text-brand-secondary/50 font-medium">
+                Product Image
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* Add to cart */}
-        <button className="w-98 mb-3 border border-brand-secondary text-brand-secondary py-2 rounded-md text-sm tracking-widest uppercase hover:text-white hover:bg-black transition-all duration-300">
-        ADD TO CART
-        </button>
+          {/* RIGHT: Details */}
+          <div className="flex flex-col">
 
-        <button className="w-98 mb-4 border border-brand-secondary text-brand-secondary py-2 rounded-md text-sm tracking-widest uppercase hover:text-white hover:bg-black transition-all duration-300">
-          BUY IT NOW
-        </button>
+            {/* Title */}
+            <h1 className="text-3xl font-bold text-brand-secondary leading-snug">
+              Handmade Wall Hanging{" "}
+              <span className="text-brand-accent font-medium">
+                Natural Fibre
+              </span>
+            </h1>
 
-        {/* Craft Details */}
-        <div className="border-t border-brand-secondary/30 pt-4 space-y-4">
-          <h3 className="font-medium text-brand-secondary">
-              About This Craft
-            </h3>
+            {/* Price */}
+            <div className="flex items-center gap-4 mt-6">
+              <p className="text-2xl font-bold text-brand-secondary">
+                Rs. 1,499
+              </p>
+              <p className="text-lg text-brand-secondary/50 line-through">
+                Rs. 1,899
+              </p>
+              <span className="bg-brand-secondary text-brand-primary text-xs px-3 py-1 rounded-full font-semibold">
+                21% OFF
+              </span>
+            </div>
 
-           <p className="text-sm text-brand-secondary/90 leading-relaxed">
-              This handmade wall decor is crafted by skilled artisans using
-              natural fibers. Each piece is unique and adds warmth, texture,
-              and an earthy aesthetic to your living space.
+            {/* Tagline */}
+            <p className="mt-6 text-brand-secondary/80 italic">
+              Handcrafted with love using sustainable natural fibres.
             </p>
 
-             <ul className="text-sm text-brand-secondary/70 list-disc pl-5">
-              <li>100% Handmade</li>
-              <li>Eco-friendly materials</li>
-              <li>Perfect for living rooms & studios</li>
-            </ul>
+            {/* Quantity */}
+            <div className="mt-8">
+              <p className="text-sm font-semibold mb-3 text-brand-secondary">
+                Quantity
+              </p>
 
+              <div className="flex items-center w-fit border border-brand-secondary/30 rounded-xl overflow-hidden bg-brand-primary">
+                <button
+                  onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                  className="px-4 py-2 hover:bg-brand-accent/40 transition"
+                >
+                  −
+                </button>
+
+                <span className="px-6 py-2 border-x border-brand-secondary/30 font-medium">
+                  {quantity}
+                </span>
+
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-4 py-2 hover:bg-brand-accent/40 transition"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="mt-10 flex flex-col gap-4">
+
+              {/* Primary Action */}
+              <button className="w-full bg-brand-secondary text-brand-primary py-3 rounded-2xl font-semibold tracking-wide hover:opacity-90 transition-all duration-300 shadow-lg">
+                ADD TO CART
+              </button>
+
+              {/* Secondary */}
+              <button className="w-full border border-brand-secondary text-brand-secondary py-3 rounded-2xl font-semibold tracking-wide hover:bg-brand-secondary hover:text-brand-primary transition-all duration-300">
+                BUY IT NOW
+              </button>
+            </div>
+
+            {/* About Section */}
+            <div className="mt-8 border-t border-brand-secondary/20 pt-8">
+              <h3 className="text-lg font-semibold text-brand-secondary mb-4">
+                About This Craft
+              </h3>
+
+              <p className="text-brand-secondary/80 leading-relaxed text-sm">
+                This handmade wall decor is crafted by skilled artisans using
+                natural fibers. Each piece is unique and adds warmth, texture,
+                and an earthy aesthetic to your living space.
+              </p>
+
+              <ul className="mt-4 text-sm text-brand-secondary/80 space-y-2 list-disc pl-5">
+                <li>100% Handmade</li>
+                <li>Eco-friendly materials</li>
+                <li>Perfect for living rooms & studios</li>
+              </ul>
+            </div>
+
+          </div>
         </div>
-        </div>
+      </main>
     </div>
-    </main>
-    </div>
-  )
-}
+  );
+};
 
 export default Page;

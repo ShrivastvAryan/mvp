@@ -4,6 +4,8 @@ import "./globals.css";
 import QueryProvider from "@/provider/query-provider";
 import Navbar from "@/components/Navbar";
 import HydrateWrapper from "@/components/HydrateWrapper";
+import Footer from "@/components/Footer";
+import { Roboto_Slab } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +15,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const robotoSlab = Roboto_Slab({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto-slab",
 });
 
 export const metadata: Metadata = {
@@ -26,12 +34,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased scrollbar-hidden bg-brand-primary`}>
+    <html className={robotoSlab.variable}>
+      <body className={`font-roboto antialiased scrollbar-hidden bg-brand-primary`}>
         <QueryProvider>
           <HydrateWrapper>
             <Navbar />
             {children}
+            <Footer/>
           </HydrateWrapper>
         </QueryProvider>
       </body>

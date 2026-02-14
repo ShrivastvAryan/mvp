@@ -41,7 +41,7 @@ export default function Navbar() {
       <nav
         className={cn(
           "w-full mx-auto transition-all duration-300 border border-white/10",
-          "bg-brand-secondary/90 backdrop-blur-md text-brand-primary shadow-sm py-4 px-8",
+          "bg-brand-secondary/80 backdrop-blur-md text-brand-primary shadow-sm py-4 px-8",
           
         )}
       >

@@ -46,7 +46,7 @@ const LoginContent = () => {
   };
 
   return (
-    <div className="2xl:min-h-screen flex items-center 2xl:mt-0 mt-28 justify-center bg-brand-primary/10 text-brand-primary px-4">
+    <div className="d flex items-center my-28 justify-center bg-brand-primary/10 text-brand-primary px-4">
       <div className="w-full max-w-md">
         {/* Form Card */}
         <div className="bg-brand-secondary shadow-2xl rounded-[2.5rem] p-8 border border-brand-primary/5">

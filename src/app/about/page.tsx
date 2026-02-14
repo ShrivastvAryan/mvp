@@ -13,7 +13,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <main className="min-h-screen justify-center items-center flex bg-brand-primary/10 text-brand-secondary">
+    <main className="justify-center items-center flex bg-brand-primary/10 text-brand-secondary">
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
         
         {/* Layout Grid */}

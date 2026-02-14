@@ -7,3 +7,34 @@
   --color-brand-secondary: #2F3523;
   --color-brand-accent: #AEB69A;
 }
+
+@layer base {
+  /* For Chrome, Safari, and newer versions of Edge */
+  ::-webkit-scrollbar {
+    width: 8px; /* Width of the vertical scrollbar */
+    height: 8px; /* Height of the horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    /* Use your brand-secondary color for the track */
+    background: theme('colors.brand-secondary'); 
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /* Use your brand-primary color for the draggable handle */
+    background: theme('colors.brand-primary');
+    border-radius: 100px; /* Makes it pill-shaped */
+    border: 2px solid theme('colors.brand-secondary'); /* Creates a "floating" effect */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    /* Make it slightly more opaque/different on hover */
+    background: theme('colors.brand-primary / 0.8');
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.brand-primary') theme('colors.brand-secondary');
+  }
+}

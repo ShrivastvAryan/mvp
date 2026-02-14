@@ -18,7 +18,7 @@ const Page = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-    <main className="w-5xl py-12 bg-white ">
+    <main className="w-5xl py-12">
       <p className="text-sm text-brand-secondary/80 mb-8 font-semibold">
       Home / Art & Craft / <span className="text-brand-secondary">Handmade Wall</span>
       </p>

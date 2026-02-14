@@ -1,9 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Twitter, Mail, ArrowRight, MapPin, Phone } from "lucide-react";
 
 export default function Footer() {
+    const pathname = usePathname();
+
+  // Hide navbar on seller routes
+  if (pathname.startsWith("/seller")) {
+    return null;
+  }
+  
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {

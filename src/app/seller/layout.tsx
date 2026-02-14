@@ -1,3 +1,5 @@
+import SideBar from "@/components/seller/Sidebar";
+
 export default function SellerLayout({
   children,
 }: {
@@ -5,7 +7,8 @@ export default function SellerLayout({
 }) {
   return (
     <div>
-      <main className="flex-1 p-8 bg-gray-50">
+      <main className="bg-brand-primary">
+        <SideBar/>
         {children}
       </main>
     </div>

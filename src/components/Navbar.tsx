@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, ChevronDown, LogOut, User, Store, ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,6 +14,13 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
+    const pathname = usePathname();
+
+  // Hide navbar on seller routes
+  if (pathname.startsWith("/seller")) {
+    return null;
+  }
+  
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated, logout } = useAuth();

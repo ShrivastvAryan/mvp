@@ -1,5 +1,5 @@
 import React from 'react'
-import Form from '@/components/seller/form'
+import Form from '@/components/seller/Sidebar'
 
 const page = () => {
   return (

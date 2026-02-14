@@ -45,6 +45,14 @@ export async function POST(req: Request) {
   maxAge: 60 * 60 * 24 * 7,
 });
 
+  response.cookies.set("role", role, {
+    httpOnly: false,
+    path: "/",
+    maxAge: 60 * 60 * 24,
+    });
+
+
+
   response.cookies.set("refreshToken", refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

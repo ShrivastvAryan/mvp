@@ -26,5 +26,10 @@ export async function POST() {
     maxAge: 0,
   });
 
+  response.cookies.set("role", "", {
+    path: "/",
+    maxAge: 0,
+  });
+
   return response;
 }

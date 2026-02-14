@@ -50,6 +50,10 @@ export default function Navbar() {
               About Us
             </Link>
 
+             <Link href="/event" className="nav-link">
+              Event
+            </Link>
+
             <Link href="/contact" className="nav-link">
               Contact Us
             </Link>

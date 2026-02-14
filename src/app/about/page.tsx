@@ -1,73 +1,103 @@
-import React from 'react'
+"use client";
 
-const page = () => {
+import React from 'react';
+import { Heart, Sparkles, Users, Leaf, PenTool } from 'lucide-react';
+
+const AboutPage = () => {
+  const philosophy = [
+    { icon: <PenTool size={18} />, text: "Honouring traditional art & craft" },
+    { icon: <Heart size={18} />, text: "Celebrating handmade over mass-produced" },
+    { icon: <Users size={18} />, text: "Working directly with artisans" },
+    { icon: <Leaf size={18} />, text: "Using natural, sustainable materials" },
+    { icon: <Sparkles size={18} />, text: "Embracing imperfections as beauty" },
+  ];
+
   return (
-    <main className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-10 py-18">
+    <main className="min-h-screen justify-center items-center flex bg-brand-primary/10 text-brand-primary">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
+        
+        {/* Layout Grid */}
+        <div className="flex flex-col md:flex-row justify-between gap-12 items-center">
 
-        {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left Side: Content Card */}
+          <div className="bg-brand-secondary p-8 md:p-14 w-[60%] rounded-[3rem] shadow-xl border border-brand-primary/5 relative overflow-hidden">
+            {/* Subtle brand accent ornament */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-full -mr-16 -mt-16" />
+            
+            <header className="relative z-10">
+              <span className="text-xs uppercase tracking-[0.3em] font-bold opacity-50 block mb-2">Our Story</span>
+              <h1 className="text-4xl md:text-5xl font-black leading-tight">
+                About <span className="text-brand-primary underline decoration-brand-primary/20 decoration-8 underline-offset-4">Us</span>
+              </h1>
+              
+              <blockquote className="mt-6 border-l-4 border-brand-primary pl-6 italic text-xl md:text-2xl font-medium opacity-80">
+                "Crafted by Hands. Connected by Heart"
+              </blockquote>
+            </header>
 
-          {/* Content-1 */}
-          <div className="pt-12 pl-10">
-              <h1 className="text-3xl md:text-4xl font-semibold text-brand-secondary mt-2 uppercase italic inline-block border-b-2">
-              About Us
-            </h1>
+            <div className="mt-10 space-y-6 text-brand-primary/80 leading-relaxed text-base md:text-lg">
+              <p>
+                <span className="font-black text-brand-primary">Art and craft</span> celebrate the beauty of creating by hand. Every piece reflects the 
+                skill, patience, and creativity of artisans who transform natural materials into meaningful 
+                objects.
+              </p>
 
-          <h2 className="text-lg font-medium text-brand-secondary mt-4">
-            "Crafted by Hands. Connected by Heart"
-          </h2>
+              <p>
+                In a world of mass production, handmade art stands apart—carrying stories, traditions, and the unique touch of its maker. These are not just products, but living traditions passed down through generations.
+              </p>
 
-          <div className='space-y-3 text-sm md:text-base text-[#8B1E1E]'>
-            <p>
-              <span className='font-medium text-xl'>Art and craft</span> celebrate the beauty of creating by hand. Every piece reflects the 
-              skill, patience, and creativity of artisans who transform natural materials into meaningful 
-              objects. In a world of mass production, handmade art stands apart — carrying stories, traditions, and the unique touch of its maker.
-            </p>
+              <p>
+                The slight variations in handmade pieces are what make them truly special, reminding us that they are shaped by human hands, not machines. When you choose handmade, you invest in craftsmanship that values people over speed.
+              </p>
+            </div>
+            
+            {/* Philosophy Section */}
+            <div className="mt-12 pt-10 border-t border-brand-primary/10">
+              <h3 className="text-sm uppercase tracking-widest font-black mb-6">Our Craft Philosophy</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {philosophy.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 group">
+                    <div className="p-2 rounded-lg bg-brand-primary/5 text-brand-primary group-hover:bg-brand-primary group-hover:text-brand-secondary transition-all">
+                      {item.icon}
+                    </div>
+                    <span className="text-sm font-bold opacity-70 group-hover:opacity-100 transition-opacity">
+                      {item.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-            <p>
-              Art and craft are not just products, but living traditions passed down through 
-              generations. From weaving and printing to carving and shaping, each craft involves 
-              time-honoured techniques and thoughtful processes. The slight variations and imperfections 
-              in handmade pieces are what make them truly special, reminding us that they are shaped by 
-              human hands, not machines.
-            </p>
+          {/* Right Side: Visual Element */}
+          <div className="relative group w-[40%]">
+            {/* Decorative background squares */}
+            <div className="absolute -inset-4 border-2 border-brand-primary/10 rounded-[3rem] -rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+            <div className="absolute -inset-4 border-2 border-brand-primary/5 rounded-[3rem] rotate-3 group-hover:rotate-0 transition-transform duration-500" />
+            
+            <div className="relative aspect-[4/5] w-full bg-brand-secondary rounded-[2.5rem] overflow-hidden shadow-2xl">
+              {/* Replace with actual <img> tag */}
+              <div className="w-full h-full bg-brand-primary/10 flex flex-col items-center justify-center text-center p-10">
+                <div className="w-20 h-20 bg-brand-primary/20 rounded-full flex items-center justify-center mb-4">
+                  <Sparkles size={40} className="text-brand-primary opacity-40" />
+                </div>
+                <p className="text-brand-primary/40 font-bold uppercase tracking-widest text-sm">Artisan Showcase Image</p>
+              </div>
 
-            <p>
-              Our collection brings together handcrafted art and craft created using sustainable 
-              materials and traditional methods. Every product is carefully made by skilled artisans, 
-              ensuring quality, authenticity, and individuality. When you choose handmade, you support 
-              creativity, preserve cultural heritage, and invest in craftsmanship that values people over speed.
-            </p>
+              {/* Float Badge */}
+              <div className="absolute bottom-8 left-8 right-8 bg-brand-secondary/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-lg">
+                <p className="text-xs font-black uppercase tracking-tighter opacity-50 mb-1">Preserving Heritage</p>
+                <p className="text-sm font-medium leading-tight italic">
+                  Supporting 50+ local artisan communities worldwide.
+                </p>
+              </div>
+            </div>
           </div>
           
-          {/* Values */}
-          <div className='mt-7'>
-            <h3 className='font-medium text-[#8B1E1E] mb-2 pl-2'>
-              Our Craft Philosophy
-            </h3>
-
-            <ul className='list-disc pl-6 text-[#8B1E1E] text-base font-semibold space-y-1'>
-                <li>Honouring traditional art & craft practices</li>
-                <li>Celebrating handmade over mass-produced</li>
-                <li>Working directly with artisan communities</li>
-                <li>Using natural, sustainable materials</li>
-                <li>Embracing imperfections as beauty</li>
-            </ul>
-          </div>
-          </div>
-        
-        {/* Right side Image */}
-        <div className='w-[480px] h-[520px] bg-gray-300 overflow-hidden mx-auto mt-25 rounded-3xl'>
-            <div className="w-full h-full flex items-center justify-center text-gray-600">
-              Art & Craft Image
-            </div>
-        </div>
-        
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default page
+export default AboutPage;

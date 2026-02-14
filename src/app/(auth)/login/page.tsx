@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 const Page = () => {
+  const { login } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const role = searchParams.get("user");
-
-  const userType =
-    role === "seller" || role === "buyer" ? role : "buyer";
+  const userType = role === "seller" || role === "buyer" ? role : "buyer";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,9 +19,7 @@ const Page = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -29,40 +27,45 @@ const Page = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // 🔥 important
-      body: JSON.stringify({
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          role: userType,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        alert(data.message || "Login failed");
+        return;
+      }
+
+      // Update Zustand store
+      login({
         email: formData.email,
-        password: formData.password,
         role: userType,
-      }),
-    });
+      });
 
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
-      alert(data.message || "Login failed");
-      return;
+      alert("Login successful");
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
     }
-
-    alert("Login successful");
-    router.push("/");
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

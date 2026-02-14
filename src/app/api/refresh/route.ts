@@ -25,6 +25,10 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       accessToken: newAccessToken,
+      user: {
+        email: decoded.email,
+        role: decoded.role,
+      },
     });
   } catch {
     return NextResponse.json(

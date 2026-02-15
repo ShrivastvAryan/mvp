@@ -38,3 +38,35 @@
     scrollbar-color: theme('colors.brand-primary') theme('colors.brand-secondary');
   }
 }
+.soft-input {
+  width: 100%;
+  background-color: #E6DDCC;
+  border: 1px solid rgba(47, 53, 35, 0.35);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+  color: #2F3523;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.soft-input::placeholder {
+  color: rgba(47, 53, 35, 0.45);
+}
+
+.soft-input:focus {
+  border-color: #2F3523;
+}
+
+textarea.soft-input {
+  min-height: 90px;
+  resize: none;
+}
+
+select.soft-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%232F3523' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 14px;
+}

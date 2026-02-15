@@ -23,7 +23,7 @@ const Exhibition = () => {
   ];
 
   return (
-    <section className="py-24  overflow-hidden">
+    <section className="py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-3">
         
         {/* Title Section */}

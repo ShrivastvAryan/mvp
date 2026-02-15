@@ -76,7 +76,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-primary hover:cursor-pointer rounded-lg transition-colors"
               >
                 <LogOut size={16} /> Logout
               </button>
@@ -145,7 +145,7 @@ export default function Navbar() {
                  <Link href="/login?user=seller" className="text-center py-3 rounded-xl bg-brand-primary text-brand-secondary text-sm font-bold">Seller Login</Link>
                </div>
             ) : (
-              <button onClick={handleLogout} className="w-full text-left p-4 text-red-500 font-bold">Logout</button>
+              <button onClick={handleLogout} className="w-full text-left p-4 font-bold">Logout</button>
             )}
           </div>
         </div>

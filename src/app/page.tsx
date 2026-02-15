@@ -20,7 +20,7 @@ export default function Home() {
        <h1><strong>Has Hydrated:</strong> {hasHydrated ? "true" : "false"}</h1>
      </div> */}
      <Caraousel/>
-     {/* <Exhibition/> */}\
+     {/* <Exhibition/> */}
      <div className="mt-12">
      <Categories/>
      </div>

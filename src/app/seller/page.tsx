@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ProductManage from "@/components/seller/ManageProducts";
+import Link from "next/link";
 
 const Seller = () => {
   const stats = [
@@ -50,9 +51,11 @@ const Seller = () => {
           </p>
         </div>
 
-        <Button className="bg-secondary text-primary px-5 py-2.5 rounded-xl hover:opacity-90">
+        <Button className="text-brand-primary flex px-5 py-2.5 rounded-xl hover:cursor-pointer">
+          <Link href="/seller/add-product" className="flex items-center gap-1">
           <Plus size={16} className="mr-2" />
           Add Product
+          </Link>
         </Button>
       </div>
 

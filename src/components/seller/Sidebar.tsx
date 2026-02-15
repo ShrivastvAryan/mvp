@@ -18,21 +18,21 @@ const SideBar = () => {
   const pathname = usePathname();
 
   const menuItems = [
+    {
+      name: "Dashboard",
+      href: "/seller",
+      icon: <LayoutDashboard size={20} />,
+    },
 
     { 
       name: "Add a Product", 
       href: "/seller/add-product", 
       icon: <PlusCircle size={20} /> 
     },
-    { 
-      name: "Manage Products", 
-      href: "/seller/manage-products", 
-      icon: <PackageSearch size={20} /> 
-    },
   ];
 
   return (
-    <aside className="w-72 min-h-screen absolute left-0 top-0 bg-[#3d4432] text-[#dcd7c9] flex flex-col border-r border-white/5">
+    <aside className="w-72 min-h-screen bg-[#3d4432] text-[#dcd7c9] flex flex-col border-r border-white/5">
       {/* Sidebar Header */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-3">

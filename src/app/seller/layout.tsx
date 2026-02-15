@@ -7,9 +7,11 @@ export default function SellerLayout({
 }) {
   return (
     <div>
-      <main className="bg-brand-primary">
+      <main className="bg-brand-primary h-screen w-full flex">
+        <div className="w-72">
         <SideBar/>
-        {children}
+        </div>
+        <div className="w-full">{children}</div>
       </main>
     </div>
   );

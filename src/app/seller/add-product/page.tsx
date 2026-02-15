@@ -1,147 +1,169 @@
 "use client";
 
-import React, { useState } from 'react';
-import { 
-  PackagePlus, 
-  Tag, 
-  IndianRupee, 
-  AlignLeft, 
-  Layers, 
-  Boxes, 
-  FileText,
-  UploadCloud,
-  ArrowRight
-} from 'lucide-react';
+import React, { useState } from "react";
+import { PackagePlus } from "lucide-react";
 
 const AddProduct = () => {
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    category: "",
+    mrp: "",
+    price: "",
+    stock: "",
+    description: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Submitted Product:", form);
+  };
 
   return (
-    <div className="min-h-screen bg-[#dcd7c9] flex items-center justify-center py-20 px-4">
-      <div className="max-w-4xl w-full bg-[#3d4432] rounded-[3rem] p-10 md:p-16 shadow-2xl border border-white/5">
-        
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-[#dcd7c9]/10 text-[#dcd7c9] mb-6 backdrop-blur-md">
-            <PackagePlus size={40} />
-          </div>
-          <h1 className="text-4xl font-black tracking-tighter italic text-[#dcd7c9]">Add New <span className="opacity-50">Product</span></h1>
-          <p className="text-sm font-medium text-[#dcd7c9]/50 uppercase tracking-[0.2em] mt-2">Product Schema: Artisan Collection</p>
+    <div className="min-h-screen bg-primary text-secondary flex items-center justify-center px-4">
+
+      <div className="w-full max-w-4xl space-y-8">
+
+        {/* Heading */}
+        <div className="flex items-center gap-3">
+          <PackagePlus size={26} />
+          <h1 className="text-2xl font-bold">
+            Add <span className="opacity-60">Product</span>
+          </h1>
         </div>
 
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
-          {/* Product Name */}
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Product Name</label>
-            <div className="relative group">
-              <Tag className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <input 
-                type="text" 
-                placeholder="e.g. Handmade Ceramic Vase"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20"
+        {/* Form Container */}
+        <div className="border border-secondary/20 rounded-xl p-8">
+
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {/* Product Name */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium opacity-70">
+                Product Name
+              </label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Handmade Ceramic Vase"
+                className="input-style"
               />
             </div>
-          </div>
 
-          {/* Category */}
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Category</label>
-            <div className="relative group">
-              <Layers className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <select className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] appearance-none cursor-pointer">
-                <option className="bg-[#3d4432]">Select Category</option>
-                <option className="bg-[#3d4432]">Pottery</option>
-                <option className="bg-[#3d4432]">Kitchen & Dining</option>
-                <option className="bg-[#3d4432]">Textiles</option>
+            {/* Category */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium opacity-70">
+                Category
+              </label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="input-style"
+              >
+                <option value="">Select Category</option>
+                <option>Pottery</option>
+                <option>Textiles</option>
+                <option>Kitchen</option>
               </select>
             </div>
-          </div>
 
-          {/* MRP */}
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">MRP (Gross Price)</label>
-            <div className="relative group">
-              <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <input 
-                type="number" 
+            {/* MRP */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium opacity-70">
+                MRP
+              </label>
+              <input
+                type="number"
+                name="mrp"
+                value={form.mrp}
+                onChange={handleChange}
                 placeholder="0.00"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20"
+                className="input-style"
               />
             </div>
-          </div>
 
-          {/* Selling Price */}
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Selling Price</label>
-            <div className="relative group">
-              <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <input 
-                type="number" 
+            {/* Selling Price */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium opacity-70">
+                Selling Price
+              </label>
+              <input
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
                 placeholder="0.00"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20"
+                className="input-style"
               />
             </div>
-          </div>
 
-          {/* Units / Stock */}
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Available Units</label>
-            <div className="relative group">
-              <Boxes className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <input 
-                type="number" 
-                placeholder="Available quantity"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20"
+            {/* Stock */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium opacity-70">
+                Available Units
+              </label>
+              <input
+                type="number"
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                placeholder="0"
+                className="input-style"
               />
             </div>
-          </div>
 
-          {/* Short Description */}
-          <div className="space-y-2 md:col-span-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Short Description</label>
-            <div className="relative group">
-              <AlignLeft className="absolute left-4 top-6 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <textarea 
+            {/* Description */}
+            <div className="flex flex-col gap-2 md:col-span-2">
+              <label className="text-sm font-medium opacity-70">
+                Description
+              </label>
+              <textarea
                 rows={3}
-                placeholder="Briefly describe your product..."
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20 resize-none"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Brief product details..."
+                className="input-style resize-none"
               />
             </div>
-          </div>
 
-          {/* Full Details */}
-          <div className="space-y-2 md:col-span-2">
-            <label className="text-[10px] uppercase tracking-[0.2em] font-black text-[#dcd7c9]/50 ml-1">Detailed Specifications</label>
-            <div className="relative group">
-              <FileText className="absolute left-4 top-6 opacity-30 text-[#dcd7c9] group-focus-within:opacity-100 transition-opacity" size={18} />
-              <textarea 
-                rows={5}
-                placeholder="Materials, sizing, care instructions, etc..."
-                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:bg-white/10 focus:border-white/20 transition-all text-[#dcd7c9] placeholder:text-[#dcd7c9]/20 resize-none"
-              />
+            {/* Submit Button */}
+            <div className="md:col-span-2 pt-2">
+              <button
+                type="submit"
+                className="w-full bg-secondary text-primary font-semibold py-3 rounded-lg hover:opacity-90 transition"
+              >
+                Save Product
+              </button>
             </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="md:col-span-2 pt-6 flex flex-col sm:flex-row gap-4">
-            <button 
-              type="submit"
-              className="flex-1 bg-[#dcd7c9] text-[#3d4432] py-5 rounded-2xl font-black text-sm tracking-[0.2em] uppercase flex items-center justify-center gap-3 hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98] transition-all"
-            >
-              Confirm & Save Product
-              <ArrowRight size={18} />
-            </button>
-            <button 
-              type="button"
-              className="px-8 py-5 border-2 border-white/10 rounded-2xl font-black text-sm tracking-[0.2em] uppercase text-[#dcd7c9] hover:bg-white/5 transition-all"
-            >
-              Cancel
-            </button>
-          </div>
-
-        </form>
+          </form>
+        </div>
       </div>
+
+      {/* Minimal Input Styling */}
+      <style jsx>{`
+        .input-style {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 0.5rem;
+          padding: 0.75rem 1rem;
+          color: inherit;
+          outline: none;
+          transition: border 0.2s ease;
+        }
+        .input-style:focus {
+          border-color: rgba(255, 255, 255, 0.5);
+        }
+      `}</style>
     </div>
   );
 };

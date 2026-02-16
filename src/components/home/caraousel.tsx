@@ -18,12 +18,12 @@ const slides = [
   {
     id: 2,
     title: "Best Deals",
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+    image: "/img-3.jpg",
   },
   {
     id: 3,
     title: "Fast Delivery",
-    image: "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+    image: "/img-5.jpg",
   },
 ];
 

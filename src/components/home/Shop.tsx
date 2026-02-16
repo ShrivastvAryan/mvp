@@ -15,10 +15,10 @@ const TrendingProducts = () => {
   const products = [
     { id: 1, name: "Dessert Bowls (Set of 2) Green", price: "Rs. 2,100.00", image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=500", inStock: true },
     { id: 2, name: "Squiggle Cushion Cover", price: "Rs. 999.00", image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=500", inStock: true },
-    { id: 3, name: "Flowerbed Beaded Potli Bag", price: "Rs. 6,800.00", image: "https://images.unsplash.com/photo-1566150905458-1bf1fd113f0d?q=80&w=500", inStock: true },
+    { id: 3, name: "Flowerbed Beaded Potli Bag", price: "Rs. 6,800.00", image: "/pic-2.jpg", inStock: true },
     { id: 4, name: "Pulse of the Unknown", price: "Rs. 18,000.00", image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=500", inStock: true },
     { id: 5, name: "Cotton Blanket - Single Dohar", price: "Rs. 1,250.00", image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=500", inStock: true },
-    { id: 6, name: "Handcrafted Ceramic Vase", price: "Rs. 3,500.00", image: "https://images.unsplash.com/photo-1578749553371-882fbb7b8fe5?q=80&w=500", inStock: true },
+    { id: 6, name: "Handcrafted Ceramic Vase", price: "Rs. 3,500.00", image: "/pic-3.jpg", inStock: true },
   ];
 
   return (

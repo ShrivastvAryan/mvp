@@ -69,13 +69,13 @@ const EventsPage = () => {
                </div>
             </div>
 
-            <div className="bg-white/50 backdrop-blur-md p-8 rounded-[2rem] border border-brand-primary/10 flex items-center gap-6">
+            <div className="bg-brand-primary shadow-2xl p-8 rounded-[2rem] border border-brand-primary/10 flex items-center gap-6">
                <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 flex items-center justify-center">
-                  <MapPin size={32} className="text-brand-primary" />
+                  <MapPin size={32} className="text-brand-secondary/60" />
                </div>
                <div>
-                  <h4 className="font-black text-brand-primary">Local Venues</h4>
-                  <p className="text-xs font-medium opacity-60">Find an event near you.</p>
+                  <h4 className="font-black text-brand-secondary/60">Local Venues</h4>
+                  <p className="text-xs font-medium opacity-60 text-brand-secondary">Find an event near you.</p>
                </div>
             </div>
           </div>

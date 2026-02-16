@@ -13,37 +13,37 @@ const Categories = () => {
     { 
       name: "Textiles & Weaving", 
       href: "/products/textiles",
-      image: "https://images.unsplash.com/photo-1558270156-4b586c595597?q=80&w=500&auto=format&fit=crop" 
+      image: "/caraousel-1.webp" 
     },
     { 
       name: "Kitchen & Dining", 
       href: "/products/kitchen",
-      image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=500&auto=format&fit=crop" 
+      image: "/img-6.jpg" 
     },
     { 
       name: "Jewelry & Gems", 
       href: "/products/jewelry",
-      image: "https://images.unsplash.com/photo-1515562141207-7a18b5ce33c7?q=80&w=500&auto=format&fit=crop" 
+      image: "/img-1.jpg" 
     },
     { 
       name: "Home Decor", 
       href: "/products/home",
-      image: "https://images.unsplash.com/photo-1583847268964-b28dc2f51ac9?q=80&w=500&auto=format&fit=crop" 
+      image: "/img-7.jpg" 
     },
     { 
       name: "Woodworking", 
       href: "/products/wood",
-      image: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=500&auto=format&fit=crop" 
+      image: "/img-8.jpg" 
     },
     { 
       name: "Paper & Arts", 
       href: "/products/paper",
-      image: "https://images.unsplash.com/photo-1456086272160-b28b06b8b7f9?q=80&w=500&auto=format&fit=crop" 
+      image: "/img-9.jpg" 
     },
     { 
       name: "Tools & Kits", 
       href: "/products/kits",
-      image: "https://images.unsplash.com/photo-1506806732259-39c2d4a68470?q=80&w=500&auto=format&fit=crop" 
+      image: "/pic-1.jpg" 
     },
   ];
 

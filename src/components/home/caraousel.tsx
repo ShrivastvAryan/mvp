@@ -12,17 +12,14 @@ import "swiper/css/pagination";
 const slides = [
   {
     id: 1,
-    title: "Premium Products",
     image: "/car-1.jpg",
   },
   {
     id: 2,
-    title: "Best Deals",
     image: "/img-3.jpg",
   },
   {
     id: 3,
-    title: "Fast Delivery",
     image: "/img-5.jpg",
   },
 ];
@@ -43,16 +40,16 @@ const Carousel = () => {
             <div className="relative h-[500px] w-full overflow-hidden">
               <Image
                 src={slide.image}
-                alt={slide.title}
+                alt=""
                 fill
                 quality={80}
                 className="object-cover"
                 priority={slide.id === 1}
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <h2 className="text-white text-4xl font-bold">
+                {/* <h2 className="text-white text-4xl font-bold">
                   {slide.title}
-                </h2>
+                </h2> */}
               </div>
             </div>
           </SwiperSlide>

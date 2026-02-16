@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Heart, Sparkles, Users, Leaf, PenTool } from 'lucide-react';
+import Image from 'next/image';
 
 const AboutPage = () => {
   const philosophy = [
@@ -14,7 +15,7 @@ const AboutPage = () => {
 
   return (
     <main className="justify-center items-center flex bg-brand-primary/10 text-brand-secondary">
-      <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-24">
         
         {/* Layout Grid */}
         <div className="flex flex-col md:flex-row justify-between gap-12 items-center">
@@ -77,12 +78,15 @@ const AboutPage = () => {
             
             <div className="relative aspect-[4/5] w-full bg-brand-secondary rounded-[2.5rem] overflow-hidden shadow-2xl">
               {/* Replace with actual <img> tag */}
-              <div className="w-full h-full bg-brand-primary/10 flex flex-col items-center justify-center text-center p-10">
-                <div className="w-20 h-20 bg-brand-primary/20 rounded-full flex items-center justify-center mb-4">
-                  <Sparkles size={40} className="text-brand-secondary opacity-40" />
-                </div>
-                <p className="text-brand-primary font-bold uppercase tracking-widest text-sm">Artisan Showcase Image</p>
-              </div>
+              <div className="relative w-full h-full">
+  <Image
+    src="/about.webp" // put image inside public/
+    alt="Artisan Showcase"
+    fill
+    className="object-cover rounded-2xl"
+    priority
+  />
+</div>
 
               {/* Float Badge */}
               <div className="absolute bottom-8 text-brand-primary left-8 right-8 bg-brand-secondary/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-lg">

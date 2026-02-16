@@ -14,10 +14,10 @@ const Page = () => {
   // Initial products array
   const initialProducts = [
     { id: 1, name: "Handmade Ceramic Vase", price: 1500, category: "Pottery", image: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600", inStock: true },
-    { id: 2, name: "Cotton Artisan Scarf", price: 899, category: "Textiles", image: "https://images.unsplash.com/photo-1520975918318-8f28a16bfe63?w=600", inStock: false },
-    { id: 3, name: "Wooden Serving Tray", price: 2200, category: "Kitchen", image: "https://images.unsplash.com/photo-1604908177522-040c5e2d1a37?w=600", inStock: true },
+    { id: 2, name: "Cotton Artisan Scarf", price: 899, category: "Textiles", image: "/scaf.jpg", inStock: false },
+    { id: 3, name: "Wooden Serving Tray", price: 2200, category: "Kitchen", image: "/tray.jpg", inStock: true },
     { id: 4, name: "Handcrafted Clay Bowl", price: 750, category: "Pottery", image: "https://images.unsplash.com/photo-1578898887932-dce23a595ad4?w=600", inStock: true },
-    { id: 5, name: "Linen Table Runner", price: 1200, category: "Textiles", image: "https://images.unsplash.com/photo-1602524819145-2e63e33d7e11?w=600", inStock: true },
+    { id: 5, name: "Linen Table Runner", price: 1200, category: "Textiles", image: "/linen-table.jpg", inStock: true },
     { id: 6, name: "Bamboo Cutlery Set", price: 650, category: "Kitchen", image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600", inStock: true },
   ];
 

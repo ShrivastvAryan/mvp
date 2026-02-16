@@ -30,7 +30,7 @@ const TrendingProducts = () => {
           <span className="text-[10px] font-semibold uppercase tracking-[0.5em] mb-4">
             Editor's Choice
           </span>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-brand-secondary mb-6">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter text-brand-secondary mb-6">
             Shop <span className="italic font-serif font-light text-brand-secondary">Trending</span>
           </h2>
           <Link 

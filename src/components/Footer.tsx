@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Twitter, Mail, ArrowRight, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
     const pathname = usePathname();
@@ -46,10 +47,17 @@ export default function Footer() {
           
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2 space-y-6">
-            <Link href="/" className="text-3xl font-black tracking-tighter hover:opacity-70 transition-opacity">
-              Logo<span className="text-brand-primary/30">.</span>
+            <Link href="/" className="text-3xl font-black tracking-tighter mb-4 hover:opacity-70 transition-opacity">
+               <Image
+    src="/logo.png"
+    alt="Logo"
+    width={140}
+    height={45}
+    priority
+    className="object-contain"
+  />
             </Link>
-            <p className="opacity-70 text-sm leading-relaxed max-w-sm font-medium">
+            <p className="opacity-70 text-sm mt-4 leading-relaxed max-w-sm font-medium">
               Celebrating the soul of craftsmanship. We connect world-class artisans with those who value the beauty of handmade traditions.
             </p>
             <div className="flex gap-4">

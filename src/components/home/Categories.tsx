@@ -53,10 +53,10 @@ const Categories = () => {
         
         {/* Header */}
         <div className="mb-16 text-center text-brand-secondary">
-          <span className="text-xs font-black uppercase tracking-[0.4em] block mb-4">
+          <span className="text-xs font-semibold uppercase tracking-[0.4em] block mb-4">
             Curated Collections
           </span>
-          <h1 className="text-5xl md:text-6xl font-black  tracking-tighter">
+          <h1 className="text-5xl md:text-6xl font-bold  tracking-tighter">
             Browse by <span className="italic font-serif font-medium">Category</span>
           </h1>
         </div>

@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -56,7 +57,14 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
-            YourLogo<span className="text-blue-500">.</span>
+           <Image
+              src="/logo.png"
+              alt="YourLogo"
+              width={100}
+              height={20}
+              priority
+              className="object-contain"
+            />
           </Link>
 
           {/* Desktop Links */}

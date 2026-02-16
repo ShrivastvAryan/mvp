@@ -50,10 +50,6 @@ const EventsPage = () => {
                 </div>
               ))}
             </div>
-
-            <button className="mt-12 w-full sm:w-auto bg-brand-primary text-brand-secondary px-8 py-4 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95">
-              Explore Calendar <ArrowRight size={20} />
-            </button>
           </div>
 
           {/* Right Side Visual / Stats */}

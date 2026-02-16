@@ -8,7 +8,7 @@ const Categories = () => {
     { 
       name: "Pottery & Ceramics", 
       href: "/products/pottery",
-      image: "https://images.unsplash.com/photo-1525498128493-380d1990a112?q=80&w=500&auto=format&fit=crop" 
+      image: "/car-1.jpg" 
     },
     { 
       name: "Textiles & Weaving", 

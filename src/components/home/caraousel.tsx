@@ -13,7 +13,7 @@ const slides = [
   {
     id: 1,
     title: "Premium Products",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+    image: "/car-1.jpg",
   },
   {
     id: 2,
@@ -40,13 +40,15 @@ const Carousel = () => {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div className="relative h-125 w-full overflow-hidden">
-             <Image
-                    src={`${slide.image}?auto=format&fit=crop&w=1200&q=80`}
-                    alt={slide.title}
-                    fill
-                    className="object-cover"
-                    />
+            <div className="relative h-[500px] w-full overflow-hidden">
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                quality={80}
+                className="object-cover"
+                priority={slide.id === 1}
+              />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <h2 className="text-white text-4xl font-bold">
                   {slide.title}

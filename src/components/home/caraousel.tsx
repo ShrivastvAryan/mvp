@@ -26,7 +26,7 @@ const slides = [
 
 const Carousel = () => {
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto mt-24">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}

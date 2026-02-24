@@ -7,7 +7,7 @@ export interface IProduct {
   mrp: string;
   price: string;
   stock: string;
-  image: string;
+  images: string[];
   description: string;
   seller: mongoose.Types.ObjectId;
   createdAt?: Date;
@@ -42,8 +42,8 @@ const ProductSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
-    image: {
-    type: String,
+    images: {
+    type: [String],
     required: true,
     },
     description: {

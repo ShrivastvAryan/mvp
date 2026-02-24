@@ -13,7 +13,7 @@ const AddProduct = () => {
     description: "",
   });
 
-  const [image, setImage] = useState<File | null>(null);
+const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
@@ -24,19 +24,27 @@ const AddProduct = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
+ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (!e.target.files) return;
 
+  const selectedFiles = Array.from(e.target.files);
+
+  if (images.length + selectedFiles.length > 4) {
+    alert("You can upload maximum 4 images");
+    return;
+  }
+
+
+
+  setImages((prev) => [...prev, ...selectedFiles]);
+};
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!image) {
-      alert("Please select an image");
-      return;
-    }
+   if (images.length === 0) {
+  alert("Please upload at least one image");
+  return;
+}
 
     try {
       setLoading(true);
@@ -49,7 +57,9 @@ const AddProduct = () => {
       formData.append("price", form.price);
       formData.append("stock", form.stock);
       formData.append("description", form.description);
-      formData.append("image", image);
+      images.forEach((file) => {
+  formData.append("images", file);
+});
 
       const res = await fetch("/api/product", {
         method: "POST",
@@ -73,7 +83,7 @@ const AddProduct = () => {
         stock: "",
         description: "",
       });
-      setImage(null);
+      setImages([]);
 
     } catch (error: any) {
       alert(error.message || "Something went wrong");
@@ -81,6 +91,10 @@ const AddProduct = () => {
       setLoading(false);
     }
   };
+
+  const removeImage = (index: number) => {
+  setImages((prev) => prev.filter((_, i) => i !== index));
+};
 
   return (
     <div className="min-h-screen w-full bg-[#D7CEBC] text-[#2F3523] px-10 py-8">
@@ -167,17 +181,47 @@ const AddProduct = () => {
           </div>
 
           {/* Image Upload */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-[#2F3523]/70">
-              Product Image
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="soft-input"
-            />
-          </div>
+          {/* Images Upload */}
+<div className="flex flex-col gap-3 md:col-span-2">
+  <label className="text-sm font-medium text-[#2F3523]/70">
+    Product Images (Max 4)
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    onChange={handleImageChange}
+    disabled={images.length >= 4}
+    className="soft-input"
+  />
+
+  {/* Preview Grid */}
+  {images.length > 0 && (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+      {images.map((file, index) => (
+        <div
+          key={index}
+          className="relative group border rounded-lg overflow-hidden"
+        >
+          <img
+            src={URL.createObjectURL(file)}
+            alt="preview"
+            className="h-28 w-full object-cover"
+          />
+
+          <button
+            type="button"
+            onClick={() => removeImage(index)}
+            className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
           {/* Description */}
           <div className="flex flex-col gap-2 md:col-span-2">

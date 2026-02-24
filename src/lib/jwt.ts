@@ -9,7 +9,7 @@ console.log("REFRESH_SECRET loaded:", REFRESH_SECRET);
 export const generateAccessToken = (payload: any) => {
   console.log("Generating access token with payload:", payload);
   return jwt.sign(payload, ACCESS_SECRET as string, {
-    expiresIn: "30m",
+    expiresIn: "1d",
   });
 };
 

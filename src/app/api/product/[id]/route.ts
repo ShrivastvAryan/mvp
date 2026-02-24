@@ -29,7 +29,6 @@ export async function PUT(
   try {
     await connectDB();
 
-    // 🔥 unwrap params (Next.js 14 fix)
     const { id } = await context.params;
 
     const seller = req.headers.get("user-id");
@@ -41,7 +40,6 @@ export async function PUT(
     }
 
     const product = await Product.findById(id);
-
     if (!product) {
       return NextResponse.json(
         { message: "Product not found" },
@@ -49,7 +47,6 @@ export async function PUT(
       );
     }
 
-    // 🔥 Ownership check
     if (product.seller.toString() !== seller) {
       return NextResponse.json(
         { message: "Forbidden" },
@@ -64,49 +61,51 @@ export async function PUT(
     const price = formData.get("price") as string;
     const stock = formData.get("stock") as string;
     const description = formData.get("description") as string;
-    const file = formData.get("image") as File | null;
 
-    let imageUrl = product.image;
+    const files = formData.getAll("images") as File[];
 
-    // 🔥 If new image uploaded
-    if (file && file.size > 0) {
-      // Delete old Cloudinary image
-      const publicId = product.image.split("/").pop()?.split(".")[0];
+    let imageUrls = product.images;
 
-      if (publicId) {
-        await cloudinary.uploader.destroy(`products/${publicId}`);
+    // 🔥 If new images uploaded → replace all
+    if (files.length > 0) {
+
+      // Delete old images from Cloudinary
+      for (const url of product.images) {
+        const publicId = url.split("/").pop()?.split(".")[0];
+        if (publicId) {
+          await cloudinary.uploader.destroy(`products/${publicId}`);
+        }
       }
 
-      // Upload new image
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+      imageUrls = [];
 
-      const uploadResult: any = await new Promise((resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream({ folder: "products" }, (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          })
-          .end(buffer);
-      });
+      for (const file of files) {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
 
-      imageUrl = uploadResult.secure_url;
+        const uploadResult: any = await new Promise((resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream({ folder: "products" }, (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            })
+            .end(buffer);
+        });
+
+        imageUrls.push(uploadResult.secure_url);
+      }
     }
 
-    // 🔥 Update fields
     product.name = name || product.name;
     product.mrp = mrp ? mrp : product.mrp;
     product.price = price ? price : product.price;
     product.stock = stock ? stock : product.stock;
     product.description = description || product.description;
-    product.image = imageUrl;
+    product.images = imageUrls;
 
     await product.save();
 
-    return NextResponse.json({
-      success: true,
-      product,
-    });
+    return NextResponse.json({ success: true, product });
 
   } catch (error) {
     console.error("UPDATE PRODUCT ERROR:", error);
@@ -125,7 +124,6 @@ export async function DELETE(
   try {
     await connectDB();
 
-    // 🔥 unwrap params
     const { id } = await context.params;
 
     const seller = req.headers.get("user-id");
@@ -137,7 +135,6 @@ export async function DELETE(
     }
 
     const product = await Product.findById(id);
-
     if (!product) {
       return NextResponse.json(
         { message: "Product not found" },
@@ -145,7 +142,6 @@ export async function DELETE(
       );
     }
 
-    // 🔥 ownership check
     if (product.seller.toString() !== seller) {
       return NextResponse.json(
         { message: "Forbidden" },
@@ -153,10 +149,9 @@ export async function DELETE(
       );
     }
 
-    // 🔥 Delete image from Cloudinary
-    if (product.image) {
-      const publicId = product.image.split("/").pop()?.split(".")[0];
-
+    // 🔥 Delete all images from Cloudinary
+    for (const url of product.images) {
+      const publicId = url.split("/").pop()?.split(".")[0];
       if (publicId) {
         await cloudinary.uploader.destroy(`products/${publicId}`);
       }

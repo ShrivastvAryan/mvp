@@ -9,7 +9,10 @@ export async function POST(req: NextRequest) {
 
     const seller = req.headers.get("user-id");
     if (!seller) {
-      return NextResponse.json({ message: "Unauthorized-route wala hai" }, { status: 401 });
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
     const formData = await req.formData();
@@ -20,38 +23,73 @@ export async function POST(req: NextRequest) {
     const price = formData.get("price") as string;
     const stock = formData.get("stock") as string;
     const description = formData.get("description") as string;
-    const file = formData.get("image") as File;
 
-    if (!name || !category || !mrp || !price || !stock || !description || !file) {
-      return NextResponse.json({ message: "All fields required" }, { status: 400 });
+    const files = formData.getAll("images") as File[];
+
+    // ✅ Validation
+    if (
+      !name ||
+      !category ||
+      !mrp ||
+      !price ||
+      !stock ||
+      !description ||
+      files.length === 0
+    ) {
+      return NextResponse.json(
+        { message: "All fields and at least one image required" },
+        { status: 400 }
+      );
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    if (files.length > 4) {
+      return NextResponse.json(
+        { message: "Maximum 4 images allowed" },
+        { status: 400 }
+      );
+    }
 
-    const uploadResult: any = await new Promise((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream({ folder: "products" }, (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        })
-        .end(buffer);
-    });
+    // 🔥 Upload all images to Cloudinary
+    const imageUrls: string[] = [];
 
+    for (const file of files) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadResult: any = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({ folder: "products" }, (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          })
+          .end(buffer);
+      });
+
+      imageUrls.push(uploadResult.secure_url);
+    }
+
+    // ✅ Create product
     const product = await Product.create({
       name,
       category,
-      mrp,
-      price,
-      stock,
+      mrp: mrp,
+      price: price,
+      stock: stock,
       description,
       seller,
-      image: uploadResult.secure_url,
+      images: imageUrls, // 🔥 array
     });
 
-    return NextResponse.json({ success: true, product }, { status: 201 });
+    return NextResponse.json(
+      { success: true, product },
+      { status: 201 }
+    );
 
   } catch (error) {
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    console.error("CREATE PRODUCT ERROR:", error);
+    return NextResponse.json(
+      { message: "Server error" },
+      { status: 500 }
+    );
   }
 }

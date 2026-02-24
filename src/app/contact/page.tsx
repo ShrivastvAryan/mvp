@@ -9,9 +9,9 @@ const ContactPage = () => {
       <div className="max-w-7xl mx-auto px-6 py-24 md:py-32">
 
         {/* Header */}
-        <header className="max-w-3xl mb-20">
+        <header className="max-w-3xl mb-20 mt-12">
           <span className="text-xs uppercase tracking-[0.35em] font-bold opacity-50 block mb-4">
-            Let’s Connect
+            Let&apos;s Connect
           </span>
 
           <h1 className="text-4xl md:text-5xl font-black inline-block border-b-2 border-brand-secondary pb-3">
@@ -24,7 +24,7 @@ const ContactPage = () => {
         </header>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 ">
 
           {/* Left Content */}
           <div className="space-y-8 text-lg leading-relaxed text-brand-secondary/80">
@@ -54,7 +54,7 @@ const ContactPage = () => {
           </div>
 
           {/* Right: Feedback Form */}
-          <div className="relative">
+          <div className="relative bg-red-600">
             <div className="rounded-[2.75rem] bg-brand-secondary text-brand-primary p-12 shadow-xl">
 
               <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center mb-8">

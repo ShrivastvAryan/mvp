@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   Table,
@@ -9,95 +10,160 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+interface Product {
+  _id: string;
+  name: string;
+  category: string;
+  mrp: number;
+  price: number;
+  stock: number;
+  description: string;
+}
+
+const fetchProducts = async (): Promise<Product[]> => {
+  const res = await fetch("/api/get-product");
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to fetch products");
+  }
+
+  return data.products;
+};
 
 const ProductManage = () => {
-  const products = [
-    {
-      name: "Handmade Ceramic Vase",
-      category: "Pottery",
-      mrp: "₹ 2000",
-      selling: "₹ 1500",
-      stock: 12,
-      description: "Clay artisan vase with matte finish.",
-    },
-    {
-      name: "Handwoven Cotton Scarf",
-      category: "Textiles",
-      mrp: "₹ 1200",
-      selling: "₹ 899",
-      stock: 30,
-      description: "Soft breathable cotton scarf.",
-    },
-  ];
+  const { data: products = [], isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    staleTime: 1000 * 60 * 2,
+  });
+
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [form, setForm] = useState<Product | null>(null);
+
+  const openEditDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setForm(product);
+  };
+
+  const closeDialog = () => {
+    setSelectedProduct(null);
+    setForm(null);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!form) return;
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  if (isLoading) return <div className="p-6">Loading...</div>;
+  if (isError) return <div className="p-6 text-red-500">Error</div>;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-secondary/20 bg-secondary/5">
-      <Table>
-        <TableHeader className="bg-secondary/10 border-b border-secondary/20">
-          <TableRow>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              Product
-            </TableHead>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              Category
-            </TableHead>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              MRP
-            </TableHead>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              Selling
-            </TableHead>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              Stock
-            </TableHead>
-            <TableHead className="py-4 font-medium text-secondary/80">
-              Description
-            </TableHead>
-            <TableHead className="py-4 text-right font-medium text-secondary/80">
-              Actions
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {products.map((product, index) => (
-            <TableRow
-              key={index}
-              className="hover:bg-secondary/5 transition-colors"
-            >
-              <TableCell className="py-5 font-medium">
-                {product.name}
-              </TableCell>
-              <TableCell className="py-5 opacity-80">
-                {product.category}
-              </TableCell>
-              <TableCell className="py-5 opacity-70">
-                {product.mrp}
-              </TableCell>
-              <TableCell className="py-5 font-medium text-green-600">
-                {product.selling}
-              </TableCell>
-              <TableCell className="py-5">
-                {product.stock}
-              </TableCell>
-              <TableCell className="py-5 opacity-70 max-w-xs leading-relaxed">
-                {product.description}
-              </TableCell>
-              <TableCell className="py-5 text-right">
-                <div className="flex justify-end gap-3">
-                  <button className="p-2.5 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition">
-                    <Pencil size={16} />
-                  </button>
-                  <button className="p-2.5 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </TableCell>
+    <>
+      <div className="overflow-hidden rounded-xl border border-secondary/20 bg-secondary/5">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Product</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>MRP</TableHead>
+              <TableHead>Selling</TableHead>
+              <TableHead>Stock</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+
+          <TableBody>
+            {products.map((product) => (
+              <TableRow key={product._id}>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell>₹ {product.mrp}</TableCell>
+                <TableCell className="text-green-600">
+                  ₹ {product.price}
+                </TableCell>
+                <TableCell>{product.stock}</TableCell>
+                <TableCell>{product.description}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-3">
+                    <button
+                      onClick={() => openEditDialog(product)}
+                      className="p-2.5 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition"
+                    >
+                      <Pencil size={16} />
+                    </button>
+
+                    <button className="p-2.5 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* 🔥 Edit Dialog */}
+      <Dialog open={!!selectedProduct} onOpenChange={closeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Product</DialogTitle>
+          </DialogHeader>
+
+          {form && (
+            <div className="space-y-4">
+              <Input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Product Name"
+              />
+              <Input
+                name="mrp"
+                value={form.mrp}
+                onChange={handleChange}
+                placeholder="MRP"
+              />
+              <Input
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                placeholder="Selling Price"
+              />
+              <Input
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                placeholder="Stock"
+              />
+              <Input
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Description"
+              />
+
+              <Button className="w-full">
+                Update Product
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

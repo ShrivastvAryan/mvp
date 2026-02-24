@@ -83,7 +83,7 @@ UserSchema.methods.comparePassword = async function (
 //
 // Prevent model overwrite in Next.js (hot reload fix)
 //
-const Buyer: Model<IUser> =
-  mongoose.models.Buyer || mongoose.model<IUser>("Buyer", UserSchema);
+const User: Model<IUser> =
+  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
 
-export default Buyer;
+export default User;

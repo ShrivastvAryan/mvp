@@ -73,7 +73,7 @@ if (role && user.role !== role) {
       success: true,
       user: {
         id: user._id,
-        email: user.email,
+        email: user.email, 
         role: user.role,
         name: user.name,
       },

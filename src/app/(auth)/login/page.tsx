@@ -65,7 +65,7 @@ const LoginContent = () => {
       });
 
       if (data.user.role === "seller") {
-        router.push("/seller/dashboard");
+        router.push("/seller");
       } else {
         router.push("/");
       }

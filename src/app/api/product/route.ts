@@ -7,6 +7,11 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
+    const seller = req.headers.get("user-id");
+    if (!seller) {
+      return NextResponse.json({ message: "Unauthorized-route wala hai" }, { status: 401 });
+    }
+
     const formData = await req.formData();
 
     const name = formData.get("name") as string;
@@ -15,21 +20,15 @@ export async function POST(req: NextRequest) {
     const price = formData.get("price") as string;
     const stock = formData.get("stock") as string;
     const description = formData.get("description") as string;
-    const seller = formData.get("seller") as string;
     const file = formData.get("image") as File;
 
-    if (!file) {
-      return NextResponse.json(
-        { success: false, message: "Image is required" },
-        { status: 400 }
-      );
+    if (!name || !category || !mrp || !price || !stock || !description || !file) {
+      return NextResponse.json({ message: "All fields required" }, { status: 400 });
     }
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Cloudinary
     const uploadResult: any = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream({ folder: "products" }, (error, result) => {
@@ -50,41 +49,9 @@ export async function POST(req: NextRequest) {
       image: uploadResult.secure_url,
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Product created successfully",
-        product,
-      },
-      { status: 201 }
-    );
+    return NextResponse.json({ success: true, product }, { status: 201 });
+
   } catch (error) {
-    console.error("CREATE PRODUCT ERROR:", error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
-  }
-}
-
-// ✅ GET ALL PRODUCTS
-export async function GET() {
-  try {
-    await connectDB();
-
-    const products = await Product.find()
-      .populate("seller", "name email")
-      .sort({ createdAt: -1 });
-
-    return NextResponse.json(
-      { success: true, products },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("GET PRODUCTS ERROR:", error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

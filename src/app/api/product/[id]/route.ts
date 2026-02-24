@@ -62,50 +62,66 @@ export async function PUT(
     const stock = formData.get("stock") as string;
     const description = formData.get("description") as string;
 
-    const files = formData.getAll("images") as File[];
+    const newFiles = formData.getAll("images") as File[];
+    const existingImagesFromClient = formData.getAll(
+      "existingImages"
+    ) as string[];
 
-    let imageUrls = product.images;
+    // 🔥 Determine which images were removed
+    const removedImages = product.images.filter(
+      (img) => !existingImagesFromClient.includes(img)
+    );
 
-    // 🔥 If new images uploaded → replace all
-    if (files.length > 0) {
-
-      // Delete old images from Cloudinary
-      for (const url of product.images) {
-        const publicId = url.split("/").pop()?.split(".")[0];
-        if (publicId) {
-          await cloudinary.uploader.destroy(`products/${publicId}`);
-        }
-      }
-
-      imageUrls = [];
-
-      for (const file of files) {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        const uploadResult: any = await new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream({ folder: "products" }, (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-            })
-            .end(buffer);
-        });
-
-        imageUrls.push(uploadResult.secure_url);
+    // 🔥 Delete removed images from Cloudinary
+    for (const url of removedImages) {
+      const publicId = url.split("/").pop()?.split(".")[0];
+      if (publicId) {
+        await cloudinary.uploader.destroy(`products/${publicId}`);
       }
     }
 
+    // Start with images user kept
+    let updatedImages: string[] = [...existingImagesFromClient];
+
+    // 🔥 Upload new images
+    for (const file of newFiles) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadResult: any = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({ folder: "products" }, (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          })
+          .end(buffer);
+      });
+
+      updatedImages.push(uploadResult.secure_url);
+    }
+
+    // Optional: enforce max 4 server-side
+    if (updatedImages.length > 4) {
+      return NextResponse.json(
+        { message: "Maximum 4 images allowed" },
+        { status: 400 }
+      );
+    }
+
+    // 🔥 Update fields
     product.name = name || product.name;
     product.mrp = mrp ? mrp : product.mrp;
     product.price = price ? price : product.price;
     product.stock = stock ? stock : product.stock;
     product.description = description || product.description;
-    product.images = imageUrls;
+    product.images = updatedImages;
 
     await product.save();
 
-    return NextResponse.json({ success: true, product });
+    return NextResponse.json({
+      success: true,
+      product,
+    });
 
   } catch (error) {
     console.error("UPDATE PRODUCT ERROR:", error);

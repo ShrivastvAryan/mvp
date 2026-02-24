@@ -28,7 +28,7 @@ interface Product {
   price: number;
   stock: number;
   description: string;
-   image: string;  
+   images: string[];
 }
 
 const fetchProducts = async (): Promise<Product[]> => {
@@ -52,17 +52,35 @@ const ProductManage = () => {
   const [editProduct, setEditProduct] = useState<Product | null>(null);
 const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [form, setForm] = useState<Product | null>(null);
-  const [newImage, setNewImage] = useState<File | null>(null);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+const [newImages, setNewImages] = useState<File[]>([]);
 
 const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (e.target.files && e.target.files[0]) {
-    setNewImage(e.target.files[0]);
+  if (!e.target.files) return;
+
+  const files = Array.from(e.target.files);
+
+  if (existingImages.length + newImages.length + files.length > 4) {
+    alert("Maximum 4 images allowed");
+    return;
   }
+
+  setNewImages((prev) => [...prev, ...files]);
 };
 
-  const openEditDialog = (product: Product) => {
+const removeExistingImage = (index: number) => {
+  setExistingImages((prev) => prev.filter((_, i) => i !== index));
+};
+
+const removeNewImage = (index: number) => {
+  setNewImages((prev) => prev.filter((_, i) => i !== index));
+};
+
+const openEditDialog = (product: Product) => {
   setEditProduct(product);
   setForm(product);
+  setExistingImages(product.images);
+  setNewImages([]);
 };
 
 const openDeleteDialog = (product: Product) => {
@@ -72,7 +90,7 @@ const openDeleteDialog = (product: Product) => {
  const closeEditDialog = () => {
   setEditProduct(null);
   setForm(null);
-  setNewImage(null);
+  setNewImages([]);
 };
 
 const closeDeleteDialog = () => {
@@ -84,7 +102,7 @@ const closeDeleteDialog = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = async () => {
+const handleUpdate = async () => {
   if (!form) return;
 
   const formData = new FormData();
@@ -95,9 +113,15 @@ const closeDeleteDialog = () => {
   formData.append("stock", String(form.stock));
   formData.append("description", form.description);
 
-  if (newImage) {
-    formData.append("image", newImage);
-  }
+  // Send remaining old images
+  existingImages.forEach((img) => {
+    formData.append("existingImages", img);
+  });
+
+  // Send new files
+  newImages.forEach((file) => {
+    formData.append("images", file);
+  });
 
   await fetch(`/api/product/${form._id}`, {
     method: "PUT",
@@ -168,35 +192,80 @@ const handleDelete = async (id: string) => {
       </div>
 
       {/* 🔥 Edit Dialog */}
-    <Dialog open={!!editProduct} onOpenChange={closeEditDialog}>
-  <DialogContent>
+  <Dialog open={!!editProduct} onOpenChange={closeEditDialog}>
+  <DialogContent className="sm:max-w-2xl">
     <DialogHeader>
       <DialogTitle>Edit Product</DialogTitle>
     </DialogHeader>
 
     {form && (
-      <div className="space-y-4">
+      <div className="space-y-6">
 
-        {/* 🔥 Current Image Preview */}
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Current Image</p>
-          <img
-            src={newImage ? URL.createObjectURL(newImage) : form.image}
-            alt="product"
-            className="h-32 w-full object-cover rounded-md border"
-          />
+        {/* 🔥 Existing Images */}
+        <div>
+          <p className="text-sm font-medium mb-2">Current Images</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {existingImages.map((img, index) => (
+              <div
+                key={index}
+                className="relative group border rounded-lg overflow-hidden"
+              >
+                <img
+                  src={img}
+                  className="h-28 w-full object-cover"
+                  alt="product"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeExistingImage(index)}
+                  className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* 🔥 Replace Image */}
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Change Image</p>
+        {/* 🔥 New Image Upload */}
+        <div>
+          <p className="text-sm font-medium mb-2">
+            Add More Images (Max 4 Total)
+          </p>
           <Input
             type="file"
             accept="image/*"
+            multiple
             onChange={handleImageChange}
+            disabled={existingImages.length + newImages.length >= 4}
           />
+
+          {newImages.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              {newImages.map((file, index) => (
+                <div
+                  key={index}
+                  className="relative group border rounded-lg overflow-hidden"
+                >
+                  <img
+                    src={URL.createObjectURL(file)}
+                    className="h-28 w-full object-cover"
+                    alt="preview"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeNewImage(index)}
+                    className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
+        {/* 🔥 Other Fields */}
         <Input
           name="name"
           value={form.name}
@@ -232,9 +301,9 @@ const handleDelete = async (id: string) => {
           placeholder="Description"
         />
 
-       <Button className="w-full" onClick={handleUpdate}>
-  Update Product
-</Button>
+        <Button className="w-full" onClick={handleUpdate}>
+          Update Product
+        </Button>
       </div>
     )}
   </DialogContent>
@@ -267,7 +336,7 @@ const handleDelete = async (id: string) => {
         <div className="space-y-2">
           <p className="text-sm font-medium">Product Image</p>
           <img
-            src={deleteProduct.image}
+            src={deleteProduct.images[0]}
             alt="product"
             className="h-32 w-full object-cover rounded-md border"
           />

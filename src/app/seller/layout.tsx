@@ -11,7 +11,7 @@ export default function SellerLayout({
         <div className="w-72">
         <SideBar/>
         </div>
-        <div className="w-full">{children}</div>
+        <div className="w-full ml-20">{children}</div>
       </main>
     </div>
   );

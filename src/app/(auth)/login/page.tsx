@@ -13,6 +13,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const LoginContent = () => {
   const { login } = useAuth();
@@ -52,6 +53,7 @@ const LoginContent = () => {
       const data = await res.json();
 
       if (!res.ok) {
+        toast.error("Login failed!", { description: data.message });
         throw new Error(data.message || "Login failed");
       }
 
@@ -59,6 +61,7 @@ const LoginContent = () => {
     },
 
     onSuccess: (data) => {
+      toast.success("Login successful!", { description: "Redirecting..." });
       login({
         email: data.user.email,
         role: data.user.role,
@@ -78,7 +81,7 @@ const LoginContent = () => {
   };
 
   return (
-    <div className="flex items-center my-28 justify-center bg-brand-primary/10 text-brand-primary px-4">
+    <div className="flex items-center my-36 justify-center bg-brand-primary/10 text-brand-primary px-4">
       <div className="w-full max-w-md">
         <div className="bg-brand-secondary shadow-2xl rounded-2xl p-8 border border-brand-primary/5">
 
@@ -140,12 +143,12 @@ const LoginContent = () => {
               </div>
             </div>
 
-            {/* Error */}
+            {/* Error
             {loginMutation.isError && (
               <p className="text-red-500 text-sm">
                 {(loginMutation.error as Error).message}
               </p>
-            )}
+            )} */}
 
             {/* Submit */}
             <button

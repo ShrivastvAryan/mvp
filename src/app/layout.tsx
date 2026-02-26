@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import HydrateWrapper from "@/components/HydrateWrapper";
 import Footer from "@/components/Footer";
 import { Roboto_Slab } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           <HydrateWrapper>
             <Navbar />
             {children}
+             <Toaster position="top-center" richColors />
             <Footer/>
           </HydrateWrapper>
         </QueryProvider>

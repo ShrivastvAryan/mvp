@@ -32,7 +32,7 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="w-72 min-h-screen bg-[#3d4432] text-[#dcd7c9] flex flex-col border-r border-white/5">
+    <aside className="w-72 min-h-screen bg-[#3d4432] text-[#dcd7c9] flex flex-col  fixed left-0 top-0  border-r border-white/5">
       {/* Sidebar Header */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-3">
@@ -40,10 +40,7 @@ const SideBar = () => {
             <Store size={24} />
           </div>
           <div>
-            <h2 className="text-sm font-black uppercase tracking-[0.2em]">Seller Hub</h2>
-            <p className="text-[10px] opacity-40 font-bold uppercase tracking-widest leading-none mt-1">
-              Artisan Dashboard
-            </p>
+            <h2 className="text-sm font-black uppercase tracking-[0.2em]">Seller Dashboard</h2>
           </div>
         </div>
       </div>
@@ -82,7 +79,7 @@ const SideBar = () => {
 
       {/* Sidebar Footer */}
       <div className="p-6 border-t border-white/5">
-        <button className="flex items-center gap-4 w-full p-4 rounded-2xl text-brand-primary hover:bg-brand-primary/10 transition-all font-bold text-sm">
+        <button className="flex items-center gap-4 w-full cursor-pointer p-4 rounded-2xl text-brand-primary hover:bg-brand-primary/10 transition-all font-bold text-sm">
           <LogOut size={20} />
           <span>Logout</span>
         </button>

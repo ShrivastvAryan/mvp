@@ -39,7 +39,7 @@ const Seller = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-primary text-secondary px-10 py-8 space-y-14">
+    <div className="min-h-screen bg-primary text-secondary px-10 py-8 space-y-8">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="space-y-1">
@@ -47,7 +47,7 @@ const Seller = () => {
             Seller <span className="opacity-60 italic">Dashboard</span>
           </h1>
           <p className="text-sm opacity-60">
-            Overview of your store performance
+            Overview of your store 
           </p>
         </div>
 
@@ -60,7 +60,7 @@ const Seller = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {stats.map((stat, index) => (
           <Card
             key={index}
@@ -79,10 +79,10 @@ const Seller = () => {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </div> */}
 
       {/* Manage Products Section */}
-      <div className="space-y-6">
+      <div className="space-y-3">
         {/* Heading */}
         <div className="flex items-start gap-3">
           <div className="mt-1">

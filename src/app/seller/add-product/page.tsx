@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { PackagePlus } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 const AddProduct = () => {
   const [form, setForm] = useState({
@@ -30,11 +32,9 @@ const [images, setImages] = useState<File[]>([]);
   const selectedFiles = Array.from(e.target.files);
 
   if (images.length + selectedFiles.length > 4) {
-    alert("You can upload maximum 4 images");
+    toast.error("You can upload a maximum of 4 images");
     return;
   }
-
-
 
   setImages((prev) => [...prev, ...selectedFiles]);
 };
@@ -42,7 +42,7 @@ const [images, setImages] = useState<File[]>([]);
     e.preventDefault();
 
    if (images.length === 0) {
-  alert("Please upload at least one image");
+  toast.error("Please upload at least one image");
   return;
 }
 
@@ -69,11 +69,11 @@ const [images, setImages] = useState<File[]>([]);
       const data = await res.json();
 
       if (!res.ok) {
+        toast.error('Failed to add product');
         throw new Error(data.message);
       }
 
-      alert("Product added successfully");
-
+      toast.success("Product added successfully");
       // Reset form
       setForm({
         name: "",
@@ -86,7 +86,7 @@ const [images, setImages] = useState<File[]>([]);
       setImages([]);
 
     } catch (error: any) {
-      alert(error.message || "Something went wrong");
+      toast.error(error.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -97,10 +97,10 @@ const [images, setImages] = useState<File[]>([]);
 };
 
   return (
-    <div className="min-h-screen w-full bg-[#D7CEBC] text-[#2F3523] px-10 py-8">
+    <div className=" w-full bg-[#D7CEBC] text-[#2F3523] px-10 py-4">
       <div className="flex items-center gap-3 mb-6">
         <PackagePlus size={24} />
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold mt-2">
           Add <span className="opacity-60">Product</span>
         </h1>
       </div>
@@ -108,7 +108,7 @@ const [images, setImages] = useState<File[]>([]);
       <div className="bg-[#F0E8D8] border border-[#2F3523]/25 rounded-2xl p-10 max-w-6xl">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-7"
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-4"
         >
           {/* Product Name */}
           <div className="flex flex-col gap-2">
@@ -238,13 +238,13 @@ const [images, setImages] = useState<File[]>([]);
 
           {/* Submit */}
           <div className="md:col-span-2 pt-6">
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#2F3523] text-[#FBFAF7] py-3 rounded-xl font-semibold hover:bg-[#3F4A2C] transition disabled:opacity-50"
+              className={`w-full bg-[#2F3523] cursor-pointer text-[#FBFAF7] py-3 rounded-xl font-semibold hover:bg-[#3F4A2C] transition disabled:opacity-50`}
             >
               {loading ? "Uploading..." : "Save Product"}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

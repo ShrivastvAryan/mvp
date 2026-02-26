@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const Page = () => {
   const { login } = useAuth();
@@ -61,6 +62,7 @@ const Page = () => {
       const data = await res.json();
 
       if (!res.ok) {
+        toast.error("Account creation failed!", { description: data.message });
         throw new Error(data.message || "Registration failed");
       }
 
@@ -69,6 +71,15 @@ const Page = () => {
 
     onSuccess: (data) => {
       console.log("Registered:", data);
+      if(userType === "seller"){
+        toast.success("Seller account created successfully!", {
+          description: "Redirecting to seller dashboard...",
+        });
+      } else {
+        toast.success("User account created successful!", {
+          description: "Redirecting...",
+        });
+      }
       login({ email: formData.email, role: userType });
       // 🔥 Redirect based on role
       if (userType === "seller") {

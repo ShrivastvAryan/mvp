@@ -90,7 +90,7 @@ export default function Navbar() {
               </button>
             ) : (
               <DropdownMenu>
-                <DropdownMenuTrigger className="group flex items-center gap-2 bg-brand-primary text-brand-secondary px-6 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 outline-none">
+                <DropdownMenuTrigger className="group flex items-center gap-2 bg-brand-primary text-brand-secondary px-6 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:cursor-pointer">
                   Login/Register
                   <ChevronDown size={14} className="group-data-[state=open]:rotate-180 transition-transform" />
                 </DropdownMenuTrigger>

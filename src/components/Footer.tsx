@@ -17,45 +17,30 @@ export default function Footer() {
 
   const footerLinks = {
     Shop: [
-      { name: "All Products", href: "/products" },
-      { name: "New Arrivals", href: "/products?sort=newest" },
-      { name: "Featured Art", href: "/products?category=featured" },
-      { name: "Special Events", href: "/event" },
-    ],
-    Company: [
+      { name: "Events", href: "/event" },
       { name: "About Us", href: "/about" },
-      { name: "Become a Seller", href: "/login?user=seller" },
-      { name: "Contact Us", href: "/contact" },
-      { name: "Careers", href: "/careers" },
-    ],
-    Support: [
-      { name: "Shipping Policy", href: "/shipping" },
-      { name: "Returns & Exchanges", href: "/returns" },
-      { name: "FAQs", href: "/faq" },
-      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Contact", href: "/contact" },
     ],
   };
 
   return (
     <footer className="bg-brand-secondary text-brand-primary border-t border-brand-primary/10">
-      {/* Newsletter Section */}
-      
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 md:gap-8">
+        <div className="flex flex-row justify-between gap-12 md:gap-8">
           
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2 space-y-6">
             <Link href="/" className="text-3xl font-black tracking-tighter mb-4 hover:opacity-70 transition-opacity">
                <Image
-    src="/logo.png"
-    alt="Logo"
-    width={140}
-    height={45}
-    priority
-    className="object-contain"
-  />
+                src="/logo.png"
+                alt="Logo"
+                width={140}
+                height={45}
+                priority
+                className="object-contain"
+              />
             </Link>
             <p className="opacity-70 text-sm mt-4 leading-relaxed max-w-sm font-medium">
               Celebrating the soul of craftsmanship. We connect world-class artisans with those who value the beauty of handmade traditions.
@@ -80,7 +65,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-sm font-bold opacity-70 hover:opacity-100 hover:text-brand-primary hover:translate-x-1 inline-block transition-all"
+                      className="text-sm font-bold opacity-70 hover:opacity-100 hover:text-brand-primary "
                     >
                       {link.name}
                     </Link>

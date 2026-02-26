@@ -1,82 +1,148 @@
 "use client";
 
 import React from 'react';
-import { Calendar, Users, Sparkles, PenTool, MapPin, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, Sparkles, Clock, Ticket } from 'lucide-react';
 
 const EventsPage = () => {
-  const eventHighlights = [
-    { icon: <PenTool size={18} />, text: "Hands-on craft workshops" },
-    { icon: <Users size={18} />, text: "Meet & learn from artisans" },
-    { icon: <Sparkles size={18} />, text: "Live craft demonstrations" },
-    { icon: <Calendar size={18} />, text: "Curated seasonal events" },
-    { icon: <MapPin size={18} />, text: "Hosted across cultural spaces" },
+  const fakeEvents = [
+    {
+      id: 1,
+      title: "The Solstice Pottery Workshop",
+      date: "MAR 12, 2026",
+      time: "10:00 AM",
+      location: "Studio 4, Kyoto Hall",
+      price: "Rs. 2,500",
+      image: "https://images.unsplash.com/photo-1525498128493-380d1990a112?q=80&w=500",
+      status: "Limited Seats"
+    },
+    {
+      id: 2,
+      title: "Indigo Dyeing: Ancient Secrets",
+      date: "APR 05, 2026",
+      time: "02:00 PM",
+      location: "The Heritage Garden",
+      price: "Rs. 1,800",
+      image: "https://images.unsplash.com/photo-1558270156-4b586c595597?q=80&w=500",
+      status: "Live"
+    },
+    {
+      id: 3,
+      title: "Hand-Block Printing Gala",
+      date: "MAY 20, 2026",
+      time: "11:30 AM",
+      location: "Creative Hub Annex",
+      price: "Rs. 3,200",
+      image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=500",
+      status: "Upcoming"
+    },
+    {
+      id: 4,
+      title: "Modern Woodcraft Expo",
+      date: "JUN 15, 2026",
+      time: "09:00 AM",
+      location: "Grand Exhibition Hall",
+      price: "Free Entry",
+      image: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=500",
+      status: "Upcoming"
+    },
+    
   ];
 
   return (
-    <main className="min-h-screen bg-brand-primary/10 text-brand-primary">
-      <div className="max-w-7xl mx-auto px-6 py-20 md:py-32">
+    // BG: Warm Stone (#D7CEBC)
+    <main className="min-h-screen mt-20 bg-[#D7CEBC] text-[#2F3523] py-24 px-6 md:px-12 selection:bg-[#2F3523] selection:text-[#D7CEBC]">
+      <div className="max-w-[1440px] mx-auto">
         
-        {/* Layout Grid */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-20">
+        {/* Editorial Header */}
+        <header className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8 border-b border-[#2F3523]/10 pb-12">
+          <div className="max-w-2xl">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 block mb-4">
+              Curated Gatherings — 2026
+            </span>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none italic mb-6">
+              Our <span className="opacity-40">Events</span>
+            </h1>
+            <p className="text-lg font-medium opacity-70 leading-relaxed italic">
+              "Experience the magic of creation first-hand through workshops and live artisan showcases."
+            </p>
+          </div>
+        </header>
 
-          {/* Left Content Card */}
-          <div className="bg-brand-secondary p-8 md:p-14 w-full lg:w-[60%] rounded-[3rem] shadow-xl border border-brand-primary/5 relative overflow-hidden">
-            
-            {/* Decorative Background Circle */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-full -mr-16 -mt-16 pointer-events-none" />
-            
-            <header className="relative z-10">
-              <span className="text-xs font-bold uppercase tracking-[0.3rem] opacity-50 block mb-2">
-                Our Gatherings
-              </span>
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight">
-                Artisan <span className="text-brand-primary italic font-serif">Events</span>
-              </h1>
-              <p className="mt-6 text-lg opacity-70 leading-relaxed max-w-lg">
-                Experience the magic of creation first-hand. Our events bring you closer to the heartbeat of traditional craftsmanship.
-              </p>
-            </header>
-
-            {/* Highlights List */}
-            <div className="mt-12 space-y-4 relative z-10">
-              {eventHighlights.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-4 group">
-                  <div className="p-3 rounded-xl bg-brand-primary text-brand-secondary group-hover:scale-110 transition-transform">
-                    {item.icon}
-                  </div>
-                  <span className="font-bold text-sm md:text-base opacity-80 group-hover:opacity-100 transition-opacity">
-                    {item.text}
+        {/* 4-Item Row Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer">
+          {fakeEvents.map((event) => (
+            <div key={event.id} className="group relative bg-[#2F3523] text-[#D7CEBC] rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-3">
+              
+              {/* Image Area: Mix-blend on Stone background inside the card */}
+              <div className="relative aspect-square bg-[#D7CEBC] m-3 rounded-[2rem] overflow-hidden">
+                <img 
+                  src={event.image} 
+                  alt={event.title}
+                  className="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-1000 group-hover:scale-110"
+                />
+                
+                {/* Status Badge */}
+                <div className="absolute top-5 left-5">
+                  <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                    event.status === 'Live' ? 'bg-red-500 text-white animate-pulse' : 'bg-[#2F3523] text-[#D7CEBC]'
+                  }`}>
+                    {event.status}
                   </span>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          {/* Right Side Visual / Stats */}
-          <div className="w-full lg:w-[40%] space-y-6">
-            <div className="bg-brand-primary text-brand-secondary p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
-               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
-                 <Sparkles size={100} />
-               </div>
-               <h2 className="text-5xl font-black mb-2">12+</h2>
-               <p className="text-sm font-bold uppercase tracking-widest opacity-60">Upcoming Exhibitions</p>
-               <div className="mt-8 pt-8 border-t border-brand-secondary/20 text-sm leading-relaxed opacity-80">
-                 Join us in celebrating human creativity through workshops and live showcases.
-               </div>
-            </div>
+              {/* Content Area */}
+              <div className="p-8">
+                <div className="flex items-center gap-2 text-[10px] font-black opacity-50 uppercase tracking-[0.2em] mb-4">
+                  <Calendar size={12} />
+                  {event.date} — {event.time}
+                </div>
+                
+                <h3 className="text-xl font-black tracking-tight leading-tight mb-6 h-14 line-clamp-2">
+                  {event.title}
+                </h3>
 
-            <div className="bg-brand-primary shadow-2xl p-8 rounded-[2rem] border border-brand-primary/10 flex items-center gap-6">
-               <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 flex items-center justify-center">
-                  <MapPin size={32} className="text-brand-secondary/60" />
-               </div>
-               <div>
-                  <h4 className="font-black text-brand-secondary/60">Local Venues</h4>
-                  <p className="text-xs font-medium opacity-60 text-brand-secondary">Find an event near you.</p>
-               </div>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-xs font-bold opacity-60">
+                    <MapPin size={14} className="opacity-40" />
+                    {event.location}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold opacity-60">
+                    <Clock size={14} className="opacity-40" />
+                    Workshop / 3 Hours
+                  </div>
+                </div>
+
+                {/* Footer Action */}
+                {/* <div className="flex items-center justify-between pt-6 border-t border-white/10">
+                  <div className="text-lg font-black tracking-tighter">
+                    {event.price}
+                  </div>
+                  <button className="bg-[#D7CEBC] text-[#2F3523] p-3 rounded-xl hover:scale-110 active:scale-95 transition-all">
+                    <Ticket size={18} />
+                  </button>
+                </div> */}
+              </div>
             </div>
-          </div>
-        
+          ))}
         </div>
+
+        {/* Client Stat Bar */}
+        {/* <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 bg-[#2F3523] text-[#D7CEBC] p-12 rounded-[3rem]">
+           <div className="text-center md:text-left">
+              <h4 className="text-4xl font-black mb-1">12+</h4>
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Monthly Workshops</p>
+           </div>
+           <div className="text-center md:text-left border-y md:border-y-0 md:border-x border-white/10 py-8 md:py-0 md:px-8">
+              <h4 className="text-4xl font-black mb-1">450+</h4>
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Creative Participants</p>
+           </div>
+           <div className="text-center md:text-left md:pl-8">
+              <h4 className="text-4xl font-black mb-1">50+</h4>
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Master Artisans</p>
+           </div>
+        </div> */}
+
       </div>
     </main>
   );

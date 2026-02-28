@@ -135,10 +135,10 @@ const [images, setImages] = useState<File[]>([]);
               className="soft-input"
             >
               <option value="">Select Category</option>
-              <option value="Wooden">Wooden HandiCrafts</option>
-              <option value="Textile">Textiles</option>
-              <option value="Pottery">Pottery</option>
-              <option value="Home-Decor">Home-Decor</option>
+              <option >Wooden-Handicraft</option>
+              <option >Textile</option>
+              <option >Pottery</option>
+              <option >Home-Decor</option>
             </select>
           </div>
 

@@ -47,10 +47,10 @@ export default function Navbar() {
 
   // fake category items to demonstrate dropdown
   const categoryItems = [
-    { name: "Electronics" },
-    { name: "Clothing" },
-    { name: "Home" },
-    { name: "Books" },
+    { name: "Wooden-Handicraft" },
+    { name: "Textile" },
+    { name: "Pottery" },
+    { name: "Home-Decor" },
   ];
 
   const [categoryOpen, setCategoryOpen] = useState(false);

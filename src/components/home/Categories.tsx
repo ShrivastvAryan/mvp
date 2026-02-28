@@ -6,44 +6,24 @@ import Link from 'next/link';
 const Categories = () => {
   const categories = [
     { 
-      name: "Pottery & Ceramics", 
-      href: "/products/pottery",
+      name: "Pottery", 
+      href: "/product/Pottery",
       image: "/car-1.jpg" 
     },
     { 
-      name: "Textiles & Weaving", 
-      href: "/products/textiles",
+      name: "Textile", 
+      href: "/product/Textile",
       image: "/caraousel-1.webp" 
     },
     { 
-      name: "Kitchen & Dining", 
-      href: "/products/kitchen",
+      name: "Home Decor", 
+      href: "/product/Home-Decor",
       image: "/img-6.jpg" 
     },
     { 
-      name: "Jewelry & Gems", 
-      href: "/products/jewelry",
+      name: "Wooden Handicraft", 
+      href: "/product/Wooden-Handicraft",
       image: "/img-1.jpg" 
-    },
-    { 
-      name: "Home Decor", 
-      href: "/products/home",
-      image: "/img-7.jpg" 
-    },
-    { 
-      name: "Woodworking", 
-      href: "/products/wood",
-      image: "/img-8.jpg" 
-    },
-    { 
-      name: "Paper & Arts", 
-      href: "/products/paper",
-      image: "/img-9.jpg" 
-    },
-    { 
-      name: "Tools & Kits", 
-      href: "/products/kits",
-      image: "/pic-1.jpg" 
     },
   ];
 

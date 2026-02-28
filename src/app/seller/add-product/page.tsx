@@ -135,9 +135,10 @@ const [images, setImages] = useState<File[]>([]);
               className="soft-input"
             >
               <option value="">Select Category</option>
-              <option>Pottery</option>
+              <option>Wooden Handicrafts</option>
               <option>Textiles</option>
-              <option>Kitchen</option>
+              <option>Pottery</option>
+              <option>Home Decor</option>
             </select>
           </div>
 

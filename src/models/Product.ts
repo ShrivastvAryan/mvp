@@ -24,7 +24,7 @@ const ProductSchema = new Schema<IProduct>(
 
     category: {
       type: String,
-      enum: ["Pottery", "Textiles", "Kitchen"],
+      enum: ["Wooden", "Textile", "Pottery", "Home Decor"],
       required: true,
     },
 

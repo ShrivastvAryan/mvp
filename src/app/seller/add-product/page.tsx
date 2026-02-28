@@ -138,7 +138,7 @@ const [images, setImages] = useState<File[]>([]);
               <option value="Wooden">Wooden HandiCrafts</option>
               <option value="Textile">Textiles</option>
               <option value="Pottery">Pottery</option>
-              <option value="Home Decor">Home Decor</option>
+              <option value="Home-Decor">Home-Decor</option>
             </select>
           </div>
 

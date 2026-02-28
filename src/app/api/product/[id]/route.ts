@@ -1,17 +1,20 @@
+//seller endpoints for get/update/delete product by id (only owner can update/delete + delete cloudinary image)
+
 import { NextRequest, NextResponse } from "next/server";
 import Product from "@/models/Product";
 import { connectDB } from "@/lib/db";
 import cloudinary from "@/lib/cloudinary";
 
-interface Params {
-  params: { id: string };
-}
-
-// ✅ GET SINGLE PRODUCT
-export async function GET(req: NextRequest, { params }: Params) {
+// ✅ GET SINGLE PRODUCT 
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   await connectDB();
 
-  const product = await Product.findById(params.id)
+  const { id } = await params;
+
+  const product = await Product.findById(id)
     .populate("seller", "name email");
 
   if (!product) {

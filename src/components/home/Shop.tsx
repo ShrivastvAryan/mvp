@@ -78,7 +78,7 @@ const TrendingProducts = () => {
 
   {/* Product Info */}
   <div className="mt-4 space-y-1.5">
-    <h3 className="text-sm font-medium text-gray-900 group-hover:text-brand-primary transition-colors line-clamp-1">
+    <h3 className="text-sm font-medium text-gray-900  transition-colors line-clamp-1">
       {product.name}
     </h3>
     

@@ -2,12 +2,13 @@ import React from 'react'
 import { Product } from '@/store/getProduct'
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
+import { calculateDiscount } from '@/utils/discount'
 
 const Card = ({ products }: { products: Product[] }) => {
   return (
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
         {products.map((product) => (
-          <Link href={`/product/cat/slug`} key={product._id}>
+          <Link href={`/product/${product.category}/${product._id}`} key={product._id}>
           <div key={product._id} className="group cursor-pointer">
             <div className="relative aspect-[4/5] bg-white/40 overflow-hidden mb-5 border border-white/20 rounded-sm">
               <img
@@ -42,7 +43,7 @@ const Card = ({ products }: { products: Product[] }) => {
         </span>
     
       <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tight">
-        {Math.round(((product.mrp - product.price) / product.mrp) * 100)}% OFF
+        {calculateDiscount(product.mrp, product.price).toFixed(0)}% OFF
       </span>
     </div>
   </div>

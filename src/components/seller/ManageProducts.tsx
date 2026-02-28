@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PackageSearch, Pencil, Sparkles, Trash2,Loader2 } from "lucide-react";
+import { PackageSearch, Pencil, Sparkles, Trash2, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
@@ -25,7 +25,7 @@ import { fetchProducts } from "@/store/getProduct";
 
 
 const ProductManage = () => {
-  const { data: products = [], refetch,isLoading } = useQuery({
+  const { data: products = [], refetch, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });
@@ -36,7 +36,7 @@ const ProductManage = () => {
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [newImages, setNewImages] = useState<File[]>([]);
   const [isUpdating, setIsUpdating] = useState(false)
-  const[isDeleting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const openEditDialog = (product: Product) => {
     setEditProduct(product);
@@ -53,22 +53,22 @@ const ProductManage = () => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (!e.target.files) return
+    if (!e.target.files) return
 
-  const files = Array.from(e.target.files)
-  const totalImages = existingImages.length + newImages.length + files.length
+    const files = Array.from(e.target.files)
+    const totalImages = existingImages.length + newImages.length + files.length
 
-  if (totalImages > 4) {
-    toast.error("Maximum 4 images allowed", {
-      description: `You can upload only max 4 images`,
-    })
+    if (totalImages > 4) {
+      toast.error("Maximum 4 images allowed", {
+        description: `You can upload only max 4 images`,
+      })
 
-    e.target.value = "" // reset input
-    return
+      e.target.value = "" // reset input
+      return
+    }
+
+    setNewImages((prev) => [...prev, ...files])
   }
-
-  setNewImages((prev) => [...prev, ...files])
-}
 
   const removeExistingImage = (i: number) =>
     setExistingImages((p) => p.filter((_, idx) => idx !== i));
@@ -76,71 +76,71 @@ const ProductManage = () => {
   const removeNewImage = (i: number) =>
     setNewImages((p) => p.filter((_, idx) => idx !== i));
 
- const handleUpdate = async () => {
-  if (!form) return
+  const handleUpdate = async () => {
+    if (!form) return
 
-  try {
-    setIsUpdating(true)
+    try {
+      setIsUpdating(true)
 
-    const formData = new FormData()
-    formData.append("name", form.name)
-    formData.append("mrp", String(form.mrp))
-    formData.append("price", String(form.price))
-    formData.append("stock", String(form.stock))
-    formData.append("description", form.description)
+      const formData = new FormData()
+      formData.append("name", form.name)
+      formData.append("mrp", String(form.mrp))
+      formData.append("price", String(form.price))
+      formData.append("stock", String(form.stock))
+      formData.append("description", form.description)
 
-    existingImages.forEach((img) =>
-      formData.append("existingImages", img)
-    )
+      existingImages.forEach((img) =>
+        formData.append("existingImages", img)
+      )
 
-    newImages.forEach((file) =>
-      formData.append("images", file)
-    )
+      newImages.forEach((file) =>
+        formData.append("images", file)
+      )
 
-    const res = await fetch(`/api/product/${form._id}`, {
-      method: "PUT",
-      body: formData,
-    })
+      const res = await fetch(`/api/product/${form._id}`, {
+        method: "PUT",
+        body: formData,
+      })
 
-    if (!res.ok) {
-      throw new Error("Update failed")
+      if (!res.ok) {
+        throw new Error("Update failed")
+      }
+
+      toast.success("Product updated successfully")
+
+      setEditProduct(null)
+      refetch()
+    } catch (error) {
+      toast.error("Failed to update product")
+    } finally {
+      setIsUpdating(false)
     }
-
-    toast.success("Product updated successfully")
-
-    setEditProduct(null)
-    refetch()
-  } catch (error) {
-    toast.error("Failed to update product")
-  } finally {
-    setIsUpdating(false)
   }
-}
 
   const handleDelete = async (id: string) => {
-  try {
-     setIsDeleting(true) 
-    const res = await fetch(`/api/product/${id}`, {
-      method: "DELETE",
-    })
-   
+    try {
+      setIsDeleting(true)
+      const res = await fetch(`/api/product/${id}`, {
+        method: "DELETE",
+      })
 
-    if (!res.ok) {
-      throw new Error("Delete failed")
+
+      if (!res.ok) {
+        throw new Error("Delete failed")
+      }
+
+      toast.success("Product deleted successfully")
+
+      setDeleteProduct(null)
+      refetch()
+    } catch (error) {
+      toast.error("Failed to delete product")
+    } finally {
+      setIsDeleting(false)
     }
-
-    toast.success("Product deleted successfully")
-
-    setDeleteProduct(null)
-    refetch()
-  } catch (error) {
-    toast.error("Failed to delete product")
-  } finally {
-    setIsDeleting(false)
   }
-}
 
-if (isLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
         <div className="relative">
@@ -173,7 +173,7 @@ if (isLoading) {
           <p className="text-sm font-medium italic opacity-70 leading-relaxed mb-10 border-l-2 border-[#2F3523]/20 pl-6">
             "Every handmade piece is currently finding its new home. Our artisans are hard at work crafting fresh traditions."
           </p>
-          
+
         </div>
       </div>
     );
@@ -197,7 +197,7 @@ if (isLoading) {
           </TableHeader>
 
           <TableBody>
-            
+
             {products.map((product) => (
               <TableRow key={product._id}>
                 <TableCell>{product.name}</TableCell>
@@ -207,7 +207,14 @@ if (isLoading) {
                   ₹ {product.price}
                 </TableCell>
                 <TableCell>{product.stock}</TableCell>
-                <TableCell>{product.description}</TableCell>
+                <TableCell className="max-w-[420px] align-top">
+                  <p
+                    className="text-sm leading-relaxed line-clamp-2"
+                    title={product.description}
+                  >
+                    {product.description}
+                  </p>
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <button
@@ -343,13 +350,13 @@ if (isLoading) {
                 name="description"
                 value={form.description}
                 onChange={handleChange}
-                 disabled={isUpdating}
+                disabled={isUpdating}
                 rows={4}
                 className="w-full bg-[#DED6C4] rounded-2xl border border-black/20 p-4 resize-none"
               />
 
               <Button disabled={isUpdating} className="w-full bg-[#2F3523] hover:bg-[#3F4A2C] cursor-pointer" onClick={handleUpdate}>
-                  {isUpdating ? "Updating..." : "Update Product"}
+                {isUpdating ? "Updating..." : "Update Product"}
               </Button>
             </div>
           )}

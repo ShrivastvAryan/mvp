@@ -9,15 +9,14 @@ import { calculateDiscount } from "@/utils/discount";
 import Image from "next/image";
 
 const Page = () => {
-  const params = useParams();
-  const { category } = params;
-  const { id } = useParams<{ id: string }>();
 
-  const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: ["product", id],
-    queryFn: () => fetchProductById(id),
-    enabled: !!id, // important to prevent query from running before we have an ID
-  });
+  const { id, category } = useParams<{ id: string; category: string }>();
+
+ const { data: product, isLoading, error } = useQuery<Product>({
+  queryKey: ["product", category, id],
+  queryFn: () => fetchProductById(id, category),
+  enabled: !!id && !!category,
+});
 
   const [quantity, setQuantity] = useState(1);
    const [selectedImage, setSelectedImage] = useState(product?.images[0]);

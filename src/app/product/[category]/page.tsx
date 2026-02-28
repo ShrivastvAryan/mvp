@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const Page = () => {
   // Initial products array
@@ -21,6 +22,7 @@ const Page = () => {
     { id: 6, name: "Bamboo Cutlery Set", price: 650, category: "Kitchen", image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600", inStock: true },
   ];
 
+  const { category } = useParams();
   const [products, setProducts] = useState(initialProducts);
   const [sortLabel, setSortLabel] = useState("Sort: Featured");
 
@@ -47,7 +49,7 @@ const Page = () => {
       {/* Header */}
       <header className="max-w-[1440px] mx-auto text-center mb-20 mt-12">
         <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4 italic">
-          Artisan <span className="opacity-40">Collection</span>
+          {category}<span className="opacity-40"> Collection</span>
         </h1>
         <p className="text-[10px] uppercase tracking-[0.4em] font-black opacity-60">
           {products.length} products — Handcrafted with Heart

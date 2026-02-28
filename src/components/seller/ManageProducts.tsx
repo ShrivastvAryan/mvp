@@ -20,24 +20,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import { Product } from "@/store/getProduct";
+import { fetchProducts } from "@/store/getProduct";
 
-interface Product {
-  _id: string;
-  name: string;
-  category: string;
-  mrp: number;
-  price: number;
-  stock: number;
-  description: string;
-  images: string[];
-}
-
-const fetchProducts = async (): Promise<Product[]> => {
-  const res = await fetch("/api/get-product");
-  const data = await res.json();
-  if (!res.ok) throw new Error("Failed to fetch");
-  return data.products;
-};
 
 const ProductManage = () => {
   const { data: products = [], refetch,isLoading } = useQuery({

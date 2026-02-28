@@ -38,12 +38,23 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
+  // remove Category from static links so we can render it as a dropdown
   const navLinks = [
-    { name: "Category", href: "/product/cat" },
     { name: "Events", href: "/event" },
     { name: "About Us", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
+
+  // fake category items to demonstrate dropdown
+  const categoryItems = [
+    { name: "Electronics" },
+    { name: "Clothing" },
+    { name: "Home" },
+    { name: "Books" },
+  ];
+
+  const [categoryOpen, setCategoryOpen] = useState(false);
+
 
   return (
     <header className="fixed top-0 w-full z-50 transition-all duration-500 ">
@@ -68,7 +79,28 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1 cursor-pointer">
+            {/* Category dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="group flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10 transition-all duration-200">
+                Category
+                <ChevronDown size={14} className="group-data-[state=open]:rotate-180 transition-transform" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48 p-2 rounded-xl border-none shadow-xl bg-brand-secondary">
+                {categoryItems.map((item) => (
+                  <DropdownMenuItem
+                    asChild
+                    key={item.name}
+                    className="focus:bg-brand-primary/10 text-brand-primary rounded-lg cursor-pointer p-3"
+                  >
+                    <Link href={`/product/${item.name}`} className="font-medium">
+                      {item.name}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -135,6 +167,35 @@ export default function Navbar() {
           )}
         >
           <div className="flex flex-col gap-2 pb-6">
+            {/* mobile category toggle */}
+            <button
+              className="flex items-center justify-between p-4 rounded-xl hover:bg-brand-primary/5 text-lg font-medium"
+              onClick={() => setCategoryOpen(!categoryOpen)}
+            >
+              Category
+              <ChevronDown
+                size={20}
+                className={cn("transition-transform", categoryOpen && "rotate-180")}
+              />
+            </button>
+            {categoryOpen && (
+              <div className="flex flex-col pl-4">
+                {categoryItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={`/product/${item.name}`}
+                    onClick={() => {
+                      setIsOpen(false);
+                      setCategoryOpen(false);
+                    }}
+                    className="py-2 text-base font-medium hover:text-brand-primary"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+
             {navLinks.map((link) => (
               <Link
                 key={link.name}

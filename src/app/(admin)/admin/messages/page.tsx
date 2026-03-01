@@ -23,7 +23,7 @@ interface Message {
 /* ------------------ FETCH ------------------ */
 
 const fetchMessages = async (): Promise<Message[]> => {
-  const res = await fetch("/api/contact", {
+  const res = await fetch("/api/get-contact", {
     method: "GET",
   });
 

@@ -7,6 +7,7 @@ import { Product } from "@/store/getProduct";
 import { fetchProductById } from "@/store/getProduct";
 import { calculateDiscount } from "@/utils/discount";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const Page = () => {
 
@@ -19,7 +20,14 @@ const Page = () => {
 });
 
   const [quantity, setQuantity] = useState(1);
-   const [selectedImage, setSelectedImage] = useState(product?.images[0]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+useEffect(() => {
+  if (product?.images?.length) {
+    setSelectedImage(product.images[0]);
+  }
+}, [product]);
+
 
  if (isLoading) {
   return (
@@ -63,6 +71,7 @@ const Page = () => {
               fill
               sizes="80px"
               className="object-cover"
+              priority
             />
           </div>
         ))}

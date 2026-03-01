@@ -79,14 +79,14 @@ const AboutPage = () => {
             <div className="relative aspect-[4/5] w-full bg-brand-secondary rounded-[2.5rem] overflow-hidden shadow-2xl">
               {/* Replace with actual <img> tag */}
               <div className="relative w-full h-full">
-  <Image
-    src="/about.webp" // put image inside public/
-    alt="Artisan Showcase"
-    fill
-    className="object-cover rounded-2xl"
-    priority
-  />
-</div>
+                <Image
+                  src="/about.webp" // put image inside public/
+                  alt="Artisan Showcase"
+                  fill
+                  className="object-cover rounded-2xl"
+                  priority
+                />
+              </div>
 
               {/* Float Badge */}
               <div className="absolute bottom-8 text-brand-primary left-8 right-8 bg-brand-secondary/90 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-lg">

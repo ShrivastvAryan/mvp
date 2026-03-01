@@ -160,15 +160,11 @@ const EventManage = () => {
   if (events.length === 0) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523] px-6 text-center">
-        {/* Deep Sage Card-like Icon Container */}
-        <div className="w-16 h-16 rounded-[2.5rem] bg-[#2F3523] text-[#D7CEBC] flex items-center justify-center mb-10 shadow-2xl rotate-3">
-          <PackageSearch size={36} strokeWidth={1.5} />
-        </div>
-
+       
         <div className="max-w-md">
-          <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40 block mb-4">Inventory Search</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40 block mb-4">Event Search</span>
           <h2 className="text-2xl font-black tracking-tighter leading-none mb-6 italic">
-            Quiet <span className="opacity-40">Spaces</span>
+            No Event <span className="opacity-40">Listed</span>
           </h2>
           <p className="text-sm font-medium italic opacity-70 leading-relaxed mb-10 border-l-2 border-[#2F3523]/20 pl-6">
             "Every handmade piece is currently finding its new home. Our artisans are hard at work crafting fresh traditions."

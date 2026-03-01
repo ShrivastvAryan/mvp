@@ -4,30 +4,30 @@ import Event from "@/models/Event";
 import cloudinary from "@/lib/cloudinary"
 
 /* GET SINGLE EVENT */
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    await connectDB();
+// export async function GET(
+//   req: NextRequest,
+//    context: { params: Promise<{ id: string }> }
+// ) {
+//   try {
+//     await connectDB();
 
-    const event = await Event.findById(params.id);
+//     const event = await EventModel.findById(id);
 
-    if (!event) {
-      return NextResponse.json(
-        { message: "Event not found" },
-        { status: 404 }
-      );
-    }
+//     if (!event) {
+//       return NextResponse.json(
+//         { message: "Event not found" },
+//         { status: 404 }
+//       );
+//     }
 
-    return NextResponse.json({ success: true, event });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message },
-      { status: 500 }
-    );
-  }
-}
+//     return NextResponse.json({ success: true, event });
+//   } catch (error: any) {
+//     return NextResponse.json(
+//       { message: error.message },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 /* UPDATE EVENT */
 

@@ -18,13 +18,13 @@ export const fetchEvents = async (): Promise<Event[]> => {
 };
 
 /* GET ONE */
-export const fetchEventById = async (id: string): Promise<Event> => {
-  const res = await fetch(`/api/event/${id}`);
-  const data = await res.json();
+// export const fetchEventById = async (id: string): Promise<Event> => {
+//   const res = await fetch(`/api/event/${id}`);
+//   const data = await res.json();
 
-  if (!res.ok) throw new Error(data.message);
-  return data.event;
-};
+//   if (!res.ok) throw new Error(data.message);
+//   return data.event;
+// };
 
 
 /* UPDATE */

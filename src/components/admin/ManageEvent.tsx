@@ -142,7 +142,7 @@ const EventManage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
+      <div className="min-h-[10vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
         <div className="relative">
           {/* Pulsing artisan-style loader */}
           <div className="w-24 h-24 rounded-[2rem] bg-[#2F3523]/5 flex items-center justify-center border border-[#2F3523]/10 animate-pulse">
@@ -150,7 +150,7 @@ const EventManage = () => {
           </div>
         </div>
         <div className="mt-8 text-center">
-          <h2 className="text-3xl font-black tracking-tighter italic mb-2">Curating <span className="opacity-40">Collection</span></h2>
+          <h2 className="text-3xl font-black tracking-tighter italic mb-2">Curating <span className="opacity-40">Events</span></h2>
         </div>
       </div>
     );
@@ -186,7 +186,7 @@ const EventManage = () => {
               <TableHead>Category</TableHead>
               <TableHead>Address</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Timing</TableHead>
+              <TableHead>Timing (24 Hour-Format)</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -195,14 +195,12 @@ const EventManage = () => {
 
             {events.map((event) => (
               <TableRow key={event._id}>
-                <TableCell>{event.name}</TableCell>
-                <TableCell>{event.category}</TableCell>
-                <TableCell>{event.address}</TableCell>
-                <TableCell>{event.date}</TableCell>
-                <TableCell>{event.time}</TableCell>
-                <TableCell className="max-w-[420px] align-top">
-                </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="max-w-50">{event.name}</TableCell>
+                <TableCell className="max-w-50">{event.category}</TableCell>
+                <TableCell className="max-w-50">{event.address}</TableCell>
+                <TableCell className="max-w-50">{event.date}</TableCell>
+                <TableCell className="max-w-50">{event.time}</TableCell>
+                               <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <button
                       onClick={() => openEditDialog(event)}
@@ -317,7 +315,7 @@ const EventManage = () => {
 
   <div className="flex flex-col gap-1">
     <label className="text-sm font-medium text-black/70">
-      Time
+      Time (24-Hour Format)
     </label>
     <Input
       type="time"

@@ -4,72 +4,149 @@ import React from 'react';
 import { 
   ShoppingBag, 
   Users, 
-  TrendingUp, 
-
+  TrendingUp,
+  LayoutDashboard,
+  Clock,
+  Loader2
 } from 'lucide-react';
 import EventManage from '@/components/admin/ManageEvent';
+import { useQuery } from '@tanstack/react-query';
+import { Product, fetchProducts } from '@/store/getProduct';
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+}
 
 const AdminPanel = () => {
+  // Queries
+  const { data: users, isLoading: uLoading } = useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await fetch('/api/user');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      return data.users;
+    },
+  });
+
+  const { data: products, isLoading: pLoading } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+  });
+
+  const isLoading = uLoading || pLoading;
+
+  // Stats Logic
+  const totalSellers = users?.filter(user => user.role === 'seller').length || 0;
+  const totalBuyers = users?.filter(user => user.role === 'buyer').length || 0;
+  const totalProducts = products?.length || 0;
+
   const stats = [
-    { label: "Total Sellers", value: "₹ 4,25,000", icon: <TrendingUp size={20} /> },
-    { label: "Total Products", value: "154", icon: <ShoppingBag size={20} /> },
-    { label: "Total Buyers", value: "42", icon: <Users size={20} /> },
+    { label: "Total Sellers", value: totalSellers, icon: <TrendingUp size={22} /> },
+    { label: "Total Products", value: totalProducts, icon: <ShoppingBag size={22} /> },
+    { label: "Total Users", value: totalBuyers, icon: <Users size={22} /> },
   ];
 
-  return (
-    <div className="flex min-h-screen bg-[#D7CEBC] text-[#2F3523] selection:bg-[#2F3523] selection:text-[#D7CEBC]">
-
-      {/* 2. Main Content Area */}
-      <main className="flex-1 overflow-y-auto">
-        
-        {/* Top Navbar */}
-        {/* <header className="h-24 border-b border-[#2F3523]/10 flex items-center justify-between px-10 bg-[#D7CEBC]/50 backdrop-blur-md sticky top-0 z-20">
-          <div className="relative group w-96">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" size={18} />
-            <input type="text" placeholder="Search orders, artisans..." className="w-full bg-[#2F3523]/5 border-none rounded-2xl pl-12 pr-4 py-3 text-sm focus:ring-2 focus:ring-[#2F3523]/10 outline-none" />
+  if (isLoading) return (
+      <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+        <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
+        <div className="relative">
+          {/* Pulsing artisan-style loader */}
+          <div className="w-24 h-24 rounded-[2rem] bg-[#2F3523]/5 flex items-center justify-center border border-[#2F3523]/10 animate-pulse">
+            <Loader2 className="animate-spin opacity-40" size={40} strokeWidth={1} />
           </div>
-          <div className="flex items-center gap-6">
-            <button className="relative p-2 opacity-50 hover:opacity-100 transition-opacity">
-              <Bell size={22} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-[#D7CEBC]" />
-            </button>
-            <div className="h-10 w-10 rounded-xl bg-[#2F3523] text-[#D7CEBC] flex items-center justify-center font-black text-xs">AD</div>
-          </div>
-        </header> */}
-
-        {/* Dashboard Content */}
-        <div className="p-10 space-y-10">
-          
-          {/* Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="bg-white/40 p-8 rounded-[2.5rem] border border-white/20 shadow-sm group">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 rounded-xl bg-[#2F3523]/5 text-[#2F3523]">
-                    {stat.icon}
-                  </div>
-                </div>
-                <h3 className="text-[10px] uppercase tracking-[0.2em] font-black opacity-40 ">{stat.label}</h3>
-                <p className="text-3xl font-black tracking-tighter ">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Demo Table - Recent Activity */}
-          <EventManage />
         </div>
-      </main>
-
-      {/* Demo Credentials Floating Label */}
-      <div className="fixed bottom-10 right-10 bg-[#2F3523] text-[#D7CEBC] p-6 rounded-3xl border border-white/20 shadow-2xl z-50">
-        <h4 className="text-[10px] uppercase tracking-widest font-black mb-3 opacity-40">Demo Access</h4>
-        <div className="space-y-1 text-sm font-bold">
-          <p className="opacity-70">User: <span className="text-white">admin@artisan.com</span></p>
-          <p className="opacity-70">Pass: <span className="text-white">demo1234</span></p>
+        <div className="mt-8 text-center">
+          <h2 className="text-3xl font-black tracking-tighter italic mb-2">Curating <span className="opacity-40">Admin Panel</span></h2>
         </div>
       </div>
+      </main>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#D7CEBC] text-[#2F3523] selection:bg-[#2F3523] selection:text-[#D7CEBC]">
+      <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+        
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#2F3523]/10 pb-8">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 opacity-60">
+              <LayoutDashboard size={14} />
+              <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Internal Management</span>
+            </div>
+            <h1 className="text-4xl font-bold tracking-tighter">
+              Admin <span className="opacity-50 italic font-medium tracking-normal">Dashboard</span>
+            </h1>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#2F3523]/5 rounded-full border border-[#2F3523]/10">
+            <Clock size={14} className="opacity-60" />
+            <span className="text-xs font-bold opacity-60 uppercase tracking-widest">
+              Live Overview
+            </span>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="group relative bg-white/30 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/20 shadow-sm transition-all hover:bg-white/40"
+            >
+              <div className="flex justify-between items-start mb-8">
+                <div className="p-3.5 rounded-2xl bg-[#2F3523] text-[#D7CEBC] shadow-lg transition-transform ">
+                  {stat.icon}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-[11px] uppercase tracking-[0.25em] font-black opacity-40 mb-1">
+                  {stat.label}
+                </h3>
+                <p className="text-4xl font-black tracking-tighter">
+                  {stat.value}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Events Section */}
+        <div className="space-y-8">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight">
+              Manage <span className="opacity-50">Events</span>
+            </h2>
+            <p className="text-sm opacity-60 font-medium italic">
+              Unified control for all marketplace listings
+            </p>
+          </div>
+
+          <div >
+            <EventManage />
+          </div>
+        </div>
+
+      </main>
     </div>
   );
 };
+
+// --- Combined Loading Skeleton ---
+const AdminSkeleton = () => (
+  <div className="min-h-screen bg-[#D7CEBC] p-10 animate-pulse">
+    <div className="max-w-7xl mx-auto space-y-12">
+      <div className="h-20 w-1/3 bg-[#2F3523]/10 rounded-3xl" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-52 bg-white/20 rounded-[2.5rem]" />
+        ))}
+      </div>
+      <div className="h-[400px] bg-white/10 rounded-[3rem]" />
+    </div>
+  </div>
+);
 
 export default AdminPanel;

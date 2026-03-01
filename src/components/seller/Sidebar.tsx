@@ -1,21 +1,22 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   PlusCircle, 
-  PackageSearch, 
-  Settings, 
   LogOut,
   ChevronRight,
-  Store
+  Store,
+  Menu,
+  X
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const SideBar = () => {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
     {
@@ -23,7 +24,6 @@ const SideBar = () => {
       href: "/seller",
       icon: <LayoutDashboard size={20} />,
     },
-
     { 
       name: "Add a Product", 
       href: "/seller/add-product", 
@@ -31,8 +31,8 @@ const SideBar = () => {
     },
   ];
 
-  return (
-    <aside className="w-72 min-h-screen bg-[#3d4432] text-[#dcd7c9] flex flex-col  fixed left-0 top-0  border-r border-white/5">
+  const NavContent = () => (
+    <>
       {/* Sidebar Header */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-3">
@@ -53,6 +53,7 @@ const SideBar = () => {
             <Link
               key={item.name}
               href={item.href}
+              onClick={() => setIsOpen(false)} // Close on mobile link click
               className={cn(
                 "group flex items-center justify-between p-4 rounded-2xl transition-all duration-300",
                 isActive 
@@ -79,12 +80,46 @@ const SideBar = () => {
 
       {/* Sidebar Footer */}
       <div className="p-6 border-t border-white/5">
-        <button className="flex items-center gap-4 w-full cursor-pointer p-4 rounded-2xl text-brand-primary hover:bg-brand-primary/10 transition-all font-bold text-sm">
+        <button className="flex items-center gap-4 w-full cursor-pointer p-4 rounded-2xl text-[#dcd7c9] hover:bg-white/5 transition-all font-bold text-sm">
           <LogOut size={20} />
           <span>Logout</span>
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Header/Toggle */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#3d4432] border-b border-white/5 flex items-center justify-between px-6 z-50">
+        <div className="flex items-center gap-3 text-[#dcd7c9]">
+          <Store size={20} />
+          <span className="text-xs font-black uppercase tracking-widest">Seller</span>
+        </div>
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-[#dcd7c9] p-2 hover:bg-white/5 rounded-lg transition-colors"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Container */}
+      <aside className={cn(
+        "fixed left-0 top-0 h-full bg-[#3d4432] text-[#dcd7c9] flex flex-col border-r border-white/5 z-50 transition-transform duration-300 ease-in-out lg:translate-x-0 w-72",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <NavContent />
+      </aside>
+    </>
   );
 };
 

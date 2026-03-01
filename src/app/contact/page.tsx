@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -41,66 +41,75 @@ const ContactPage = () => {
 
   return (
     <main className="min-h-screen bg-[#D7CEBC] text-[#2F3523] selection:bg-[#2F3523] selection:text-[#D7CEBC]">
-      <div className="max-w-5xl mx-auto px-6 py-24 lg:py-40">
+      <div className="max-w-5xl mx-auto px-6 py-16 md:py-24 lg:py-32">
         
-        {/* Minimalist Header */}
-        <header className="mb-16">
-          <h1 className="text-6xl font-black tracking-tighter leading-none mb-6">
-            Get in <span className="opacity-40 italic font-medium tracking-normal">Touch</span>
+        {/* Simplified Header */}
+        <header className="mb-12 md:mb-20">
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight leading-tight mb-6">
+            Get in <span className="italic font-serif opacity-60">touch</span>
           </h1>
-          <p className="max-w-xl text-lg opacity-60 font-medium leading-relaxed border-l border-[#2F3523]/20 pl-6">
-            Have a question about our artisans or your order? We are here to help.
+          <p className="max-w-md text-base md:text-lg opacity-70 font-normal leading-relaxed">
+            Have a question about our artisans or your order? <br className="hidden md:block" />
+            Our team is here to assist you.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
           
-          {/* Left: Direct Details */}
-          <div className="lg:col-span-4 space-y-10">
-            <div>
-              <h4 className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-2">Email</h4>
-              <p className="text-xl font-bold tracking-tight">support@yourbrand.com</p>
+          {/* Left: Contact Details (More minimal) */}
+          <div className="lg:col-span-4 space-y-12 order-2 lg:order-1">
+            <div className="space-y-8">
+              <div>
+                <h4 className="text-[10px] uppercase tracking-[0.2em] font-semibold opacity-40 mb-3">Email</h4>
+                <p className="text-lg md:text-xl font-medium border-b border-[#2F3523]/10 pb-2 w-fit">
+                  support@yourbrand.com
+                </p>
+              </div>
+
+              <div>
+                <h4 className="text-[10px] uppercase tracking-[0.2em] font-semibold opacity-40 mb-3">Location</h4>
+                <p className="text-lg md:text-xl font-medium">New Delhi, India</p>
+              </div>
             </div>
 
-            <div>
-              <h4 className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-2">Location</h4>
-              <p className="text-xl font-bold tracking-tight">New Delhi, India</p>
-            </div>
-
-            <div className="pt-6 border-t border-[#2F3523]/10">
-              <p className="text-xs font-bold opacity-40 uppercase tracking-widest leading-loose">
-                Response time:<br /> Within 24 Hours
+            <div className="pt-8">
+              <p className="text-[11px] font-medium opacity-50 uppercase tracking-widest leading-loose italic">
+                Typical response time: <br />
+                Within 24 Hours
               </p>
             </div>
           </div>
 
           {/* Right: Refined Form */}
-          <div className="lg:col-span-8">
-            <form onSubmit={handleSubmit} className="bg-[#2F3523] text-[#D7CEBC] p-10 rounded-[2.5rem] shadow-xl space-y-8">
+          <div className="lg:col-span-8 order-1 lg:order-2">
+            <form 
+              onSubmit={handleSubmit} 
+              className="bg-[#2F3523] text-[#D7CEBC] p-8 md:p-12 rounded-[1.5rem] md:rounded-[2rem] shadow-sm space-y-8"
+            >
               <div className="space-y-4">
-                <div className="flex justify-between items-center px-1">
-                  <label className="text-[10px] uppercase tracking-[0.2em] font-black opacity-40">
-                    Message
-                  </label>
-                </div>
+                <label className="text-[10px] uppercase tracking-[0.2em] font-semibold opacity-50 block ml-1">
+                  Your Message
+                </label>
 
                 <textarea
-                  rows={6}
+                  rows={5}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us what's on your mind..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:border-[#D7CEBC]/40 transition-all placeholder:text-[#D7CEBC]/20 text-md resize-none"
+                  placeholder="How can we help you today?"
+                  className="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#D7CEBC] transition-all placeholder:text-[#D7CEBC]/30 text-lg resize-none rounded-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={mutation.isPending}
-                className="group w-full bg-[#D7CEBC] text-[#2F3523] py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-3 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {mutation.isPending ? "Sending..." : "Submit Inquiry"}
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+              <div className="flex justify-end pt-4">
+                <button
+                  type="submit"
+                  disabled={mutation.isPending}
+                  className="group inline-flex items-center gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] py-2 border-b border-[#D7CEBC]/40 hover:border-[#D7CEBC] transition-all disabled:opacity-50"
+                >
+                  {mutation.isPending ? "Sending" : "Send Inquiry"}
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             </form>
           </div>
 

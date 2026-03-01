@@ -95,7 +95,7 @@ const [images, setImages] = useState<File[]>([]);
 };
 
   return (
-    <div className=" w-full bg-[#D7CEBC] text-[#2F3523] px-10 py-4">
+    <div className=" w-full ml-36 bg-[#D7CEBC] text-[#2F3523] px-10 py-4">
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-2xl font-semibold mt-2">
           Add <span className="opacity-60">Event</span>

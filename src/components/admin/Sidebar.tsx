@@ -8,6 +8,11 @@ import React from 'react';
 const Sidebar = () => {
   const pathname = usePathname();
 
+  if (pathname.startsWith("/admin/auth")) {
+    return null;
+  }
+
+
   const navItems = [
     { 
       name: "Overview", 
@@ -65,12 +70,12 @@ const Sidebar = () => {
       </nav>
 
       {/* Footer / Logout */}
-      <div className="p-8 border-t border-white/5">
+      <button className="p-8 border-t border-white/5" onClick={() => {localStorage.removeItem("admin-auth"); window.location.href = "/";}}>
         <Link href="/"className="flex items-center gap-4 hover:cursor-pointer text-brand-primary font-bold text-sm p-4 w-full rounded-2xl group">
           <LogOut size={18}/> 
           Logout
         </Link>
-      </div>
+      </button>
     </aside>
   );
 };

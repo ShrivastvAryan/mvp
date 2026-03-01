@@ -45,7 +45,7 @@ const MessagesPage = () => {
 
 
    if (isLoading) return (
-      <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+      <main className="w-full ml-36 mx-auto px-6 py-12 space-y-12">
         <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
         <div className="relative">
           {/* Pulsing artisan-style loader */}
@@ -62,7 +62,7 @@ const MessagesPage = () => {
 
   return (
     <div className="min-h-screen bg-[#D7CEBC] text-[#2F3523]">
-      <main className="max-w-7xl mx-auto px-6 py-12 space-y-10">
+      <main className="w-full ml-36 mx-auto px-6 py-12 space-y-10">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#2F3523]/10 pb-8">

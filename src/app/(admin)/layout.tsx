@@ -1,19 +1,23 @@
 import Sidebar from "@/components/admin/Sidebar";
 
-
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <main className="bg-brand-primary h-screen w-full flex">
-        <div className="w-72">
-        <Sidebar/>
+    <main className="bg-brand-primary min-h-screen flex">
+      
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Content Area */}
+      <div className="flex-1 flex justify-center">
+        <div className="w-full max-w-6xl px-6">
+          {children}
         </div>
-        <div className="w-full ml-20">{children}</div>
-      </main>
-    </div>
+      </div>
+
+    </main>
   );
 }

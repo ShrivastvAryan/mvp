@@ -18,7 +18,7 @@ export default function Navbar() {
     const pathname = usePathname();
 
   // Hide navbar on seller routes
-  if (pathname.startsWith("/seller")) {
+  if (pathname.startsWith("/seller") || pathname.startsWith("/admin")) {
     return null;
   }
   

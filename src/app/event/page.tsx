@@ -2,52 +2,40 @@
 
 import React from 'react';
 import { Calendar, MapPin, ArrowRight, Sparkles, Clock, Ticket } from 'lucide-react';
+import { Event } from '@/store/getEvent';
+import { fetchEvents } from '@/store/getEvent';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 
 const EventsPage = () => {
-  const fakeEvents = [
-    {
-      id: 1,
-      title: "The Solstice Pottery Workshop",
-      date: "MAR 12, 2026",
-      time: "10:00 AM",
-      location: "Studio 4, Kyoto Hall",
-      price: "Rs. 2,500",
-      image: "https://images.unsplash.com/photo-1525498128493-380d1990a112?q=80&w=500",
-      status: "Limited Seats"
-    },
-    {
-      id: 2,
-      title: "Indigo Dyeing: Ancient Secrets",
-      date: "APR 05, 2026",
-      time: "02:00 PM",
-      location: "The Heritage Garden",
-      price: "Rs. 1,800",
-      image: "https://images.unsplash.com/photo-1558270156-4b586c595597?q=80&w=500",
-      status: "Live"
-    },
-    {
-      id: 3,
-      title: "Hand-Block Printing Gala",
-      date: "MAY 20, 2026",
-      time: "11:30 AM",
-      location: "Creative Hub Annex",
-      price: "Rs. 3,200",
-      image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=500",
-      status: "Upcoming"
-    },
-    {
-      id: 4,
-      title: "Modern Woodcraft Expo",
-      date: "JUN 15, 2026",
-      time: "09:00 AM",
-      location: "Grand Exhibition Hall",
-      price: "Free Entry",
-      image: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=500",
-      status: "Upcoming"
-    },
-    
-  ];
+ 
+const { data: events, isLoading, error } = useQuery<Event[]>({
+  queryKey: ['events'],
+  queryFn: fetchEvents,
+});
 
+const getEventStatus = (eventDate: string) => {
+  const today = new Date();
+  const eventDay = new Date(eventDate);
+
+  // Remove time for accurate day comparison
+  today.setHours(0, 0, 0, 0);
+  eventDay.setHours(0, 0, 0, 0);
+
+  if (eventDay.getTime() === today.getTime()) return "Live";
+  if (eventDay > today) return "Upcoming";
+  return "Ended";
+};
+
+
+if (isLoading) {
+  return (
+    <div className="h-screen flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-brand-accent border-t-brand-secondary rounded-full animate-spin"></div>
+    </div>
+  );
+}
+    
   return (
     // BG: Warm Stone (#D7CEBC)
     <main className="min-h-screen mt-20 bg-[#D7CEBC] text-[#2F3523] py-24 px-6 md:px-12 selection:bg-[#2F3523] selection:text-[#D7CEBC]">
@@ -69,27 +57,36 @@ const EventsPage = () => {
         </header>
 
         {/* 4-Item Row Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer">
-          {fakeEvents.map((event) => (
-            <div key={event.id} className="group relative bg-[#2F3523] text-[#D7CEBC] rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
+          {events?.map((event) => (
+            <div key={event._id} className="group relative bg-[#2F3523] text-[#D7CEBC] cursor-pointer rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-3">
               
               {/* Image Area: Mix-blend on Stone background inside the card */}
-              <div className="relative aspect-square bg-[#D7CEBC] m-3 rounded-[2rem] overflow-hidden">
-                <img 
-                  src={event.image} 
-                  alt={event.title}
-                  className="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-1000 group-hover:scale-110"
+            
+             <div className="relative aspect-square bg-[#D7CEBC] m-3 rounded-[2rem] overflow-hidden">
+                <Image
+                  src={event.images?.[0] || "/placeholder.jpg"}
+                  alt={event.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover mix-blend-multiply opacity-90 transition-transform duration-1000 "
                 />
-                
+
                 {/* Status Badge */}
                 <div className="absolute top-5 left-5">
-                  <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                    event.status === 'Live' ? 'bg-red-500 text-white animate-pulse' : 'bg-[#2F3523] text-[#D7CEBC]'
-                  }`}>
-                    {event.status}
+                  <span
+                    className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                      getEventStatus(event.date) === "Live"
+                        ? "bg-red-500 text-white animate-pulse"
+                        : "bg-[#2F3523] text-[#D7CEBC]"
+                    }`}
+                  >
+                    {getEventStatus(event.date)}
                   </span>
                 </div>
               </div>
+                
+      
 
               {/* Content Area */}
               <div className="p-8">
@@ -99,13 +96,13 @@ const EventsPage = () => {
                 </div>
                 
                 <h3 className="text-xl font-black tracking-tight leading-tight mb-6 h-14 line-clamp-2">
-                  {event.title}
+                  {event.name}
                 </h3>
 
-                <div className="space-y-2 mb-4">
+                <div className="space-y-2 mb-2">
                   <div className="flex items-center gap-2 text-xs font-bold opacity-60">
                     <MapPin size={14} className="opacity-40" />
-                    {event.location}
+                    {event.address}
                   </div>
                   <div className="flex items-center gap-2 text-xs font-bold opacity-60">
                     <Clock size={14} className="opacity-40" />

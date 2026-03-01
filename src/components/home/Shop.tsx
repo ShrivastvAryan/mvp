@@ -48,70 +48,83 @@ const TrendingProducts = () => {
           }}
           className="w-full relative"
         >
-          <CarouselContent className="-ml-4">
-            {products.map((product) => (
-              
-              <CarouselItem key={product._id} className="pl-8 md:basis-1/2 lg:basis-1/4">
-                <Link
-                  href={`/product/${product.category}/${product._id}`}
-                  className="group block"
-                >
-                <div className="group cursor-pointer">
-  {/* Image Container */}
-                <div className="relative aspect-[4/5] bg-[#f8f8f8] overflow-hidden rounded-sm">
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  />
-                  
-                  {/* Category Tag - Subtle & Clean */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-brand-secondary backdrop-blur-sm px-2 py-1 rounded-sm shadow-sm">
-                    <span className="w-1 h-1 bg-brand-primary rounded-full animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
-                      {product?.category}
-                    </span>
-                  </div>
+          {isLoading ? (
+  <CarouselContent className="-ml-4">
+    {[...Array(4)].map((_, index) => (
+      <CarouselItem
+        key={index}
+        className="pl-8 md:basis-1/2 lg:basis-1/4"
+      >
+        <div className="animate-pulse">
+          <div className="aspect-[4/5] bg-brand-accent/60 rounded-sm" />
+          <div className="mt-4 space-y-2">
+            <div className="h-4 bg-brand-accent/60 rounded w-3/4" />
+            <div className="h-3 bg-brand-accent/60 rounded w-1/2" />
+          </div>
+        </div>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+) : (
+  <CarouselContent className="-ml-4">
+    {products.map((product) => (
+      <CarouselItem
+        key={product._id}
+        className="pl-8 md:basis-1/2 lg:basis-1/4"
+      >
+        <Link
+          href={`/product/${product.category}/${product._id}`}
+          className="group block"
+        >
+          <div className="group cursor-pointer">
+            <div className="relative aspect-[4/5] bg-[#f8f8f8] overflow-hidden rounded-sm">
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
 
-                  {/* Quick View Overlay - Refined Transition */}
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                    <div className="w-full bg-brand-secondary text-brand-primary py-3 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="text-[10px] font-bold text-center uppercase tracking-[0.2em]">View</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Product Info */}
-                <div className="mt-4 space-y-1.5">
-                  <h3 className="text-sm font-medium text-gray-900  transition-colors line-clamp-1">
-                    {product.name}
-                  </h3>
-                  
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-base font-bold text-gray-900">
-                      ₹{product.price.toLocaleString()}
-                    </span>
-                  
-                      <span className="text-xs text-gray-600 line-through">
-                        ₹{product.mrp.toLocaleString()}
-                      </span>
-                  
-                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tight">
-                      {Math.round(((product.mrp - product.price) / product.mrp) * 100)}% OFF
-                    </span>
-                  </div>
-                </div>
+              <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-brand-secondary px-2 py-1 rounded-sm">
+                <span className="w-1 h-1 bg-brand-primary rounded-full animate-pulse" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+                  {product.category}
+                </span>
               </div>
-                </Link>
-              </CarouselItem>
-            
-            ))}
-          </CarouselContent>
+            </div>
+
+            <div className="mt-4 space-y-1.5">
+              <h3 className="text-sm font-medium line-clamp-1">
+                {product.name}
+              </h3>
+
+              <div className="flex items-baseline gap-2">
+                <span className="text-base font-bold">
+                  ₹{product.price.toLocaleString()}
+                </span>
+
+                <span className="text-xs text-gray-600 line-through">
+                  ₹{product.mrp.toLocaleString()}
+                </span>
+
+                <span className="text-[10px] font-bold text-emerald-600">
+                  {Math.round(
+                    ((product.mrp - product.price) / product.mrp) * 100
+                  )}
+                  % OFF
+                </span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+)}
 
           {/* Minimalist Navigation Controls */}
           <div className="flex justify-center md:justify-end gap-3 mt-12">
-            <CarouselPrevious className="static translate-y-0 h-12 w-12 rounded-full border border-white/10 bg-transparent text-brand-secondary hover:bg-brand-secondary hover:text-brand-primary transition-all duration-300" />
-            <CarouselNext className="static translate-y-0 h-12 w-12 rounded-full border border-white/10 bg-transparent text-brand-secondary hover:bg-brand-secondary hover:text-brand-primary transition-all duration-300" />
+            <CarouselPrevious className="static cursor-pointer translate-y-0 h-12 w-12 rounded-full border border-white/10 bg-transparent text-brand-secondary hover:bg-brand-secondary hover:text-brand-primary transition-all duration-300" />
+            <CarouselNext className="static cursor-pointer translate-y-0 h-12 w-12 rounded-full border border-white/10 bg-transparent text-brand-secondary hover:bg-brand-secondary hover:text-brand-primary transition-all duration-300" />
           </div>
         </Carousel>
       </div>

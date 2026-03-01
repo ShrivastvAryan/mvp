@@ -8,6 +8,7 @@ import { fetchProductById } from "@/store/getProduct";
 import { calculateDiscount } from "@/utils/discount";
 import Image from "next/image";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Page = () => {
 
@@ -27,6 +28,37 @@ useEffect(() => {
     setSelectedImage(product.images[0]);
   }
 }, [product]);
+
+const handleAddToCart = () => {
+  if (!product) return;
+
+  const existingCart = localStorage.getItem("cart");
+  const cart = existingCart ? JSON.parse(existingCart) : [];
+
+  const existingItemIndex = cart.findIndex(
+    (item: any) => item.productId === product._id
+  );
+
+  if (existingItemIndex !== -1) {
+    // If already exists → increase quantity
+    cart[existingItemIndex].quantity += quantity;
+  } else {
+    // Add new item
+    cart.push({
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      mrp: product.mrp,
+      image: product.images[0],
+      quantity: quantity,
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  window.dispatchEvent(new Event("cartUpdated"));
+
+  toast.success("Added to cart!");
+};
 
 
  if (isLoading) {
@@ -149,7 +181,10 @@ useEffect(() => {
             <div className="mt-10 flex flex-col gap-4">
 
               {/* Primary Action */}
-              <button className="w-full bg-brand-secondary text-brand-primary py-3 rounded-2xl font-semibold tracking-wide hover:opacity-90 transition-all duration-300 shadow-lg cursor-pointer">
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-brand-secondary text-brand-primary py-3 rounded-2xl font-semibold tracking-wide hover:opacity-90 transition-all duration-300 shadow-lg cursor-pointer"
+              >
                 ADD TO CART
               </button>
 

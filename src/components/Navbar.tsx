@@ -3,7 +3,16 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Menu, X, ChevronDown, LogOut, User, Store, ArrowRight } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  LogOut,
+  User,
+  Store,
+  ArrowRight,
+  ShoppingCart,
+} from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -15,37 +24,59 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 export default function Navbar() {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-  // Hide navbar on seller routes
+  // Hide navbar on seller/admin routes
   if (pathname.startsWith("/seller") || pathname.startsWith("/admin")) {
     return null;
   }
-  
+
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
   const { isAuthenticated, logout } = useAuth();
 
+  /* ---------------- CART SYNC ---------------- */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const updateCartCount = () => {
+      const storedCart = localStorage.getItem("cart");
+      if (!storedCart) {
+        setCartCount(0);
+        return;
+      }
+
+      const parsed = JSON.parse(storedCart);
+      const total = parsed.reduce(
+        (acc: number, item: any) => acc + item.quantity,
+        0
+      );
+
+      setCartCount(total);
+    };
+
+    updateCartCount(); // initial load
+
+    window.addEventListener("cartUpdated", updateCartCount);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
   }, []);
 
+  /* ---------------- LOGOUT ---------------- */
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST", credentials: "include" });
     logout();
     window.location.href = "/";
   };
 
-  // remove Category from static links so we can render it as a dropdown
   const navLinks = [
     { name: "Events", href: "/event" },
     { name: "About Us", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
-  // fake category items to demonstrate dropdown
   const categoryItems = [
     { name: "Wooden-Handicraft" },
     { name: "Textile" },
@@ -53,47 +84,42 @@ export default function Navbar() {
     { name: "Home-Decor" },
   ];
 
-  const [categoryOpen, setCategoryOpen] = useState(false);
-
-
   return (
-    <header className="fixed top-0 w-full z-50 transition-all duration-500 ">
-      <nav
-        className={cn(
-          "w-full mx-auto transition-all duration-300 border border-white/10",
-          "bg-brand-secondary/80 backdrop-blur-md text-brand-primary shadow-sm py-4 px-8",
-          
-        )}
-      >
+    <header className="fixed top-0 w-full z-50">
+      <nav className="w-full bg-brand-secondary/80 backdrop-blur-md text-brand-primary border border-white/10 py-4 px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
-           <Image
+          <Link href="/">
+            <Image
               src="/logo.png"
-              alt="YourLogo"
+              alt="Logo"
               width={100}
               height={20}
               priority
-              className="object-contain"
             />
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-1 cursor-pointer">
-            {/* Category dropdown */}
+          {/* ---------------- DESKTOP NAV ---------------- */}
+          <div className="hidden md:flex items-center gap-1">
+
+            {/* Category Dropdown */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="group flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10 transition-all duration-200">
+              <DropdownMenuTrigger className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10">
                 Category
-                <ChevronDown size={14} className="group-data-[state=open]:rotate-180 transition-transform" />
+                <ChevronDown size={14} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48 p-2 rounded-xl border-none shadow-xl bg-brand-secondary">
+
+              <DropdownMenuContent
+                align="start"
+                className="w-48 p-2 bg-brand-secondary border-none shadow-xl"
+              >
                 {categoryItems.map((item) => (
                   <DropdownMenuItem
-                    asChild
                     key={item.name}
-                    className="focus:bg-brand-primary/10 text-brand-primary rounded-lg cursor-pointer p-3"
+                    asChild
+                    className="rounded-lg p-3 cursor-pointer text-brand-primary focus:bg-brand-primary/10"
                   >
-                    <Link href={`/product/${item.name}`} className="font-medium">
+                    <Link href={`/product/${item.name}`}>
                       {item.name}
                     </Link>
                   </DropdownMenuItem>
@@ -101,48 +127,62 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Static Links */}
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10 transition-all duration-200"
+                className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-brand-primary/10"
               >
                 {link.name}
               </Link>
             ))}
 
+            {/* Cart */}
+            <Link
+              href="/cart"
+              className="relative px-4 py-2 rounded-lg hover:bg-brand-primary/10 transition"
+            >
+              <ShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
             <div className="w-[1px] h-6 bg-brand-primary/20 mx-3" />
 
+            {/* Auth */}
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-primary hover:cursor-pointer rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
               >
                 <LogOut size={16} /> Logout
               </button>
             ) : (
               <DropdownMenu>
-                <DropdownMenuTrigger className="group flex items-center gap-2 bg-brand-primary text-brand-secondary px-6 py-2.5 rounded-xl font-bold text-sm hover:shadow-lg hover:cursor-pointer">
+                <DropdownMenuTrigger className="flex items-center cursor-pointer gap-2 bg-brand-primary text-brand-secondary px-6 py-2.5 rounded-xl font-bold text-sm">
                   Login/Register
-                  <ChevronDown size={14} className="group-data-[state=open]:rotate-180 transition-transform" />
+                  <ChevronDown size={14} />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl border-none shadow-xl bg-brand-secondary">
-                  <DropdownMenuItem asChild className="focus:bg-brand-primary/10 rounded-lg cursor-pointer p-3">
-                    <Link href="/login?user=buyer" className="flex items-center gap-3 font-medium">
-                      <div className="p-2 bg-brand-primary rounded-md text-brand-secondary"><User size={16} /></div>
-                      <div className="text-brand-primary">
-                        <p className="text-sm">Login as User</p>
-                        <p className="text-[10px] opacity-60">Personal account</p>
-                      </div>
+
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 p-2 bg-brand-secondary border-none shadow-xl"
+                >
+                  <DropdownMenuItem asChild className="p-3 rounded-lg text-brand-primary cursor-pointer">
+                    <Link href="/login?user=buyer" className="flex gap-3">
+                      <User size={16} />
+                      Login as User
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-brand-primary/10 rounded-lg cursor-pointer p-3">
-                    <Link href="/login?user=seller" className="flex items-center gap-3 font-medium">
-                      <div className="p-2 bg-brand-primary rounded-md text-brand-secondary"><Store size={16} /></div>
-                      <div className="text-brand-primary">
-                        <p className="text-sm">Login as Seller</p>
-                        <p className="text-[10px] opacity-60">Business account</p>
-                      </div>
+
+                  <DropdownMenuItem asChild className="p-3 rounded-lg text-brand-primary cursor-pointer">
+                    <Link href="/login?user=seller" className="flex gap-3">
+                      <Store size={16} />
+                      Login as Seller
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -150,74 +190,97 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Toggle */}
-          <button 
-            className="md:hidden p-2 rounded-xl bg-brand-primary/5 text-brand-primary"
+          {/* ---------------- MOBILE TOGGLE ---------------- */}
+          <button
+            className="md:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={cn(
-            "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
-            isOpen ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0"
-          )}
-        >
-          <div className="flex flex-col gap-2 pb-6">
-            {/* mobile category toggle */}
+        {/* ---------------- MOBILE MENU ---------------- */}
+        {isOpen && (
+          <div className="md:hidden mt-6 flex flex-col gap-2 pb-6">
+
+            {/* Category Toggle */}
             <button
-              className="flex items-center justify-between p-4 rounded-xl hover:bg-brand-primary/5 text-lg font-medium"
               onClick={() => setCategoryOpen(!categoryOpen)}
+              className="flex justify-between p-4 font-medium"
             >
               Category
               <ChevronDown
-                size={20}
-                className={cn("transition-transform", categoryOpen && "rotate-180")}
+                size={18}
+                className={cn(categoryOpen && "rotate-180")}
               />
             </button>
-            {categoryOpen && (
-              <div className="flex flex-col pl-4">
-                {categoryItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={`/product/${item.name}`}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setCategoryOpen(false);
-                    }}
-                    className="py-2 text-base font-medium hover:text-brand-primary"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            )}
 
+            {categoryOpen &&
+              categoryItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={`/product/${item.name}`}
+                  onClick={() => setIsOpen(false)}
+                  className="pl-6 py-2"
+                >
+                  {item.name}
+                </Link>
+              ))}
+
+            {/* Other Links */}
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-between p-4 rounded-xl hover:bg-brand-primary/5 text-lg font-medium"
+                className="flex justify-between p-4"
               >
                 {link.name}
-                <ArrowRight size={16} className="opacity-40" />
+                <ArrowRight size={16} />
               </Link>
             ))}
+
+            {/* Mobile Cart */}
+            <Link
+              href="/cart"
+              onClick={() => setIsOpen(false)}
+              className="flex justify-between p-4"
+            >
+              Cart
+              <div className="relative">
+                <ShoppingCart size={18} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] px-2 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+            </Link>
+
             <div className="h-[1px] bg-brand-primary/10 my-2" />
+
             {!isAuthenticated ? (
-               <div className="grid grid-cols-2 gap-3 mt-2">
-                 <Link href="/login?user=buyer" className="text-center py-3 rounded-xl border border-brand-primary/20 text-sm font-bold">User Login</Link>
-                 <Link href="/login?user=seller" className="text-center py-3 rounded-xl bg-brand-primary text-brand-secondary text-sm font-bold">Seller Login</Link>
-               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  href="/login?user=buyer"
+                  className="text-center py-3 border text-sm font-bold"
+                >
+                  User Login
+                </Link>
+                <Link
+                  href="/login?user=seller"
+                  className="text-center py-3 bg-brand-primary text-brand-secondary text-sm font-bold"
+                >
+                  Seller Login
+                </Link>
+              </div>
             ) : (
-              <button onClick={handleLogout} className="w-full text-left p-4 font-bold">Logout</button>
+              <button onClick={handleLogout} className="p-4 font-bold">
+                Logout
+              </button>
             )}
           </div>
-        </div>
+        )}
       </nav>
     </header>
   );

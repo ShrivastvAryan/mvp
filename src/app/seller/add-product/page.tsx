@@ -66,8 +66,15 @@ const [images, setImages] = useState<File[]>([]);
         body: formData,
       });
 
+       if (res.status === 401) {
+        const error: any = new Error("Unauthorized");
+        error.status = 401;
+        throw error; // 🔥 Let global QueryCache handle it
+      }
+
       const data = await res.json();
 
+    
       if (!res.ok) {
         toast.error('Failed to add product');
         throw new Error(data.message);
@@ -97,7 +104,7 @@ const [images, setImages] = useState<File[]>([]);
 };
 
   return (
-  <div className="w-full bg-[#D7CEBC] text-[#2F3523] px-4 sm:px-6py-6 md:py-5 min-h-screen">
+  <div className="w-full bg-[#D7CEBC] text-[#2F3523] px-4 sm:px-6 py-6 md:py-5 min-h-screen">
     {/* Header - Centered on mobile, left-aligned on desktop */}
     <div className="flex items-center justify-center md:justify-start gap-3 mb-8 md:mb-12">
       <PackagePlus size={28} className="text-[#2F3523]" />

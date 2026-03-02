@@ -111,7 +111,7 @@ export default function Navbar() {
 
               <DropdownMenuContent
                 align="start"
-                className="w-48 p-2 bg-brand-secondary border-none shadow-xl"
+                className="w-48 p-2 bg-brand-secondary border-none shadow-xl z-[100]"
               >
                 {categoryItems.map((item) => (
                   <DropdownMenuItem
@@ -157,7 +157,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 text-sm cursor-pointer font-medium"
               >
                 <LogOut size={16} /> Logout
               </button>
@@ -275,7 +275,7 @@ export default function Navbar() {
                 </Link>
               </div>
             ) : (
-              <button onClick={handleLogout} className="p-4 font-bold">
+              <button onClick={handleLogout} className="p-4 font-bold cursor-pointer">
                 Logout
               </button>
             )}

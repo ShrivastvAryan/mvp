@@ -21,14 +21,14 @@ import {
 } from "@/components/ui/table";
 import { toast } from "sonner";
 import { Product } from "@/store/getProduct";
-import { fetchProducts } from "@/store/getProduct";
+import { fetchProductsBySeller } from "@/store/getProduct";
 
 
 const ProductManage = () => {
   const { data: products = [], refetch, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-  });
+  queryKey: ["products"],
+  queryFn: fetchProductsBySeller,
+});
 
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
@@ -159,7 +159,7 @@ const ProductManage = () => {
   // 2. Refined Empty State
   if (products.length === 0) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523] px-6 text-center">
+      <div className="min-h-[60vh] overflow-x-hidden flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523] px-6 text-center">
         {/* Deep Sage Card-like Icon Container */}
         <div className="w-16 h-16 rounded-[2.5rem] bg-[#2F3523] text-[#D7CEBC] flex items-center justify-center mb-10 shadow-2xl rotate-3">
           <PackageSearch size={36} strokeWidth={1.5} />
@@ -182,64 +182,65 @@ const ProductManage = () => {
   return (
     <>
       {/* TABLE */}
-      <div className="rounded-2xl bg-[#D7CEBC] border p-2 border-black/20 overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>MRP</TableHead>
-              <TableHead>Selling</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+     <div className="rounded-2xl max-w-[300px] md:max-w-6xl bg-[#D7CEBC] border p-2 border-black/20">
+  <div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Product</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead>MRP</TableHead>
+          <TableHead>Selling</TableHead>
+          <TableHead>Stock</TableHead>
+          <TableHead>Description</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
 
-          <TableBody>
-
-            {products.map((product) => (
-              <TableRow key={product._id}>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>₹ {product.mrp}</TableCell>
-                <TableCell className="text-green-700">
-                  ₹ {product.price}
-                </TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell className="max-w-[420px] align-top">
-                  <p
-                    className="text-sm leading-relaxed line-clamp-2"
-                    title={product.description}
-                  >
-                    {product.description}
-                  </p>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => openEditDialog(product)}
-                      className="p-2 rounded-lg cursor-pointer bg-[#E6DFCF] border border-black/20 hover:bg-[#AEB69A]/40"
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button
-                      onClick={() => setDeleteProduct(product)}
-                      className="p-2 rounded-lg bg-[#E6DFCF] cursor-pointer border border-black/20 text-red-600 hover:bg-red-100"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <TableBody>
+        {products.map((product) => (
+          <TableRow key={product._id}>
+            <TableCell>{product.name}</TableCell>
+            <TableCell>{product.category}</TableCell>
+            <TableCell>₹ {product.mrp}</TableCell>
+            <TableCell className="text-green-700">
+              ₹ {product.price}
+            </TableCell>
+            <TableCell>{product.stock}</TableCell>
+            <TableCell className="max-w-[420px] align-top">
+              <p
+                className="text-sm leading-relaxed line-clamp-2"
+                title={product.description}
+              >
+                {product.description}
+              </p>
+            </TableCell>
+            <TableCell className="text-right">
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => openEditDialog(product)}
+                  className="p-2 rounded-lg cursor-pointer bg-[#E6DFCF] border border-black/20 hover:bg-[#AEB69A]/40"
+                >
+                  <Pencil size={16} />
+                </button>
+                <button
+                  onClick={() => setDeleteProduct(product)}
+                  className="p-2 rounded-lg cursor-pointer bg-[#E6DFCF] border border-black/20 text-red-600 hover:bg-red-100"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
+</div>
 
       {/* EDIT MODAL */}
       <Dialog open={!!editProduct} onOpenChange={() => setEditProduct(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] hide-scrollbar overflow-y-auto bg-[#E6DFCF] rounded-2xl border border-black/20">
+        <DialogContent className="max-w-[300px] lg:max-w-3xl max-h-[90vh] hide-scrollbar overflow-y-auto bg-[#E6DFCF] rounded-2xl border border-black/20">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
           </DialogHeader>
@@ -368,7 +369,7 @@ const ProductManage = () => {
         open={!!deleteProduct}
         onOpenChange={() => setDeleteProduct(null)}
       >
-        <DialogContent className="bg-[#E6DFCF] rounded-2xl border border-black/20">
+        <DialogContent className="bg-[#E6DFCF] max-w-[300px] lg:max-w-3xl rounded-2xl border border-black/20">
           <DialogHeader>
             <DialogTitle className="text-red-600">
               Delete Product

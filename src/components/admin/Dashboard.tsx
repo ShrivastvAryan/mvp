@@ -11,7 +11,6 @@ import EventManage from '@/components/admin/ManageEvent';
 import { useQuery } from '@tanstack/react-query';
 import { Product, fetchProducts } from '@/store/getProduct';
 
-
 interface User {
   _id: string;
   name: string;
@@ -50,61 +49,64 @@ const Dashboard = () => {
   ];
 
   if (isLoading) return (
-      <main className="max-w-7xl mx-auto px-6 ml-24 y-12 space-y-12">
-        <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[#D7CEBC] text-[#2F3523]">
-        <div className="relative">
-          {/* Pulsing artisan-style loader */}
-          <div className="w-24 h-24 rounded-[2rem] bg-[#2F3523]/5 flex items-center justify-center border border-[#2F3523]/10 animate-pulse">
-            <Loader2 className="animate-spin opacity-40" size={40} strokeWidth={1} />
-          </div>
+    /* Responsive loader container */
+    <main className="w-full lg:pl-72 min-h-screen bg-[#D7CEBC] flex items-center justify-center p-6">
+      <div className="flex flex-col items-center">
+        <div className="w-20 h-20 md:w-24 md:h-24 rounded-[2rem] bg-[#2F3523]/5 flex items-center justify-center border border-[#2F3523]/10 animate-pulse">
+          <Loader2 className="animate-spin opacity-40" size={40} strokeWidth={1} />
         </div>
         <div className="mt-8 text-center">
-          <h2 className="text-3xl font-black tracking-tighter italic mb-2">Curating <span className="opacity-40">Admin Panel</span></h2>
+          <h2 className="text-2xl md:text-3xl font-black tracking-tighter italic mb-2">
+            Curating <span className="opacity-40">Admin Panel</span>
+          </h2>
         </div>
       </div>
-      </main>
+    </main>
   );
 
   return (
     <div className="min-h-screen bg-[#D7CEBC] text-[#2F3523] selection:bg-[#2F3523] selection:text-[#D7CEBC]">
-      <main className="w-full ml-36 mx-auto px-6 py-12 space-y-12">
+      {/* lg:pl-72 matches the sidebar width. 
+        pt-28 ensures content starts below the mobile header.
+      */}
+      <main className="w-full lg:pl-72 mx-auto px-4 md:px-8 lg:px-12 py-12 pt-28 lg:pt-16 space-y-12">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#2F3523]/10 pb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 border-b border-[#2F3523]/10 pb-8">
           <div className="space-y-2">
             <div className="flex items-center gap-2 opacity-60">
               <LayoutDashboard size={14} />
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Internal Management</span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tighter">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tighter">
               Admin <span className="opacity-50 italic font-medium tracking-normal">Dashboard</span>
             </h1>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-[#2F3523]/5 rounded-full border border-[#2F3523]/10">
             <Clock size={14} className="opacity-60" />
-            <span className="text-xs font-bold opacity-60 uppercase tracking-widest">
+            <span className="text-[10px] md:text-xs font-bold opacity-60 uppercase tracking-widest">
               Live Overview
             </span>
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Stats Grid - 1 col on mobile, 3 on tablet+ */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="group relative bg-white/30 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/20 shadow-sm transition-all hover:bg-white/40"
+              className="group relative bg-white/30 backdrop-blur-md p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-white/20 shadow-sm transition-all hover:bg-white/40 hover:-translate-y-1"
             >
-              <div className="flex justify-between items-start mb-8">
-                <div className="p-3.5 rounded-2xl bg-[#2F3523] text-[#D7CEBC] shadow-lg transition-transform ">
+              <div className="flex justify-between items-start mb-6 md:mb-8">
+                <div className="p-3 md:p-3.5 rounded-2xl bg-[#2F3523] text-[#D7CEBC] shadow-lg">
                   {stat.icon}
                 </div>
               </div>
               <div>
-                <h3 className="text-[11px] uppercase tracking-[0.25em] font-black opacity-40 mb-1">
+                <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-black opacity-40 mb-1">
                   {stat.label}
                 </h3>
-                <p className="text-4xl font-black tracking-tighter">
+                <p className="text-3xl md:text-4xl font-black tracking-tighter">
                   {stat.value}
                 </p>
               </div>
@@ -123,7 +125,8 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div >
+          {/* Wrapper to ensure internal table doesn't break the dashboard layout */}
+          <div className="w-full">
             <EventManage />
           </div>
         </div>
@@ -134,4 +137,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

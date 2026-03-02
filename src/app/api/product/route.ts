@@ -93,3 +93,22 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET(req: NextRequest) {
+  await connectDB();
+
+  const sellerId = req.headers.get("user-id");
+
+  if (!sellerId) {
+    return NextResponse.json(
+      { message: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  const products = await Product.find({ seller: sellerId }) // 🔥 FILTER HERE
+    .populate("seller", "name email")
+    .sort({ createdAt: -1 });
+
+  return NextResponse.json({ success: true, products });
+}

@@ -13,9 +13,11 @@ import {
   X
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { useAuth } from '@/hooks/useAuth';
 
 const SideBar = () => {
   const pathname = usePathname();
+  const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
@@ -30,6 +32,13 @@ const SideBar = () => {
       icon: <PlusCircle size={20} /> 
     },
   ];
+
+  const handleLogout = async () => {
+    await fetch("/api/logout", { method: "POST", credentials: "include" });
+    logout();
+    window.location.href = "/";
+  };
+
 
   const NavContent = () => (
     <>
@@ -80,7 +89,7 @@ const SideBar = () => {
 
       {/* Sidebar Footer */}
       <div className="p-6 border-t border-white/5">
-        <button className="flex items-center gap-4 w-full cursor-pointer p-4 rounded-2xl text-[#dcd7c9] hover:bg-white/5 transition-all font-bold text-sm">
+        <button onClick={handleLogout} className="flex items-center gap-4 w-full cursor-pointer p-4 rounded-2xl text-[#dcd7c9] hover:bg-white/5 transition-all font-bold text-sm">
           <LogOut size={20} />
           <span>Logout</span>
         </button>

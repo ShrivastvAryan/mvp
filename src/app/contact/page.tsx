@@ -104,7 +104,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="group inline-flex items-center gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] py-2 border-b border-[#D7CEBC]/40 hover:border-[#D7CEBC] transition-all disabled:opacity-50"
+                  className="group inline-flex items-center gap-4 cursor-pointer text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] py-2 border-b border-[#D7CEBC]/40 hover:border-[#D7CEBC] transition-all disabled:opacity-50"
                 >
                   {mutation.isPending ? "Sending" : "Send Inquiry"}
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />

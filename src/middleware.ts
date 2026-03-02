@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
 
     if (!token) {
       return NextResponse.json(
-        { message: "Unauthorized - No token" },
+        { message: "Unauthorized" },
         { status: 401 }
       );
     }
@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
       const headers = new Headers(request.headers);
 
       headers.set("user-id", decoded.userId);
-      headers.set("user-email", decoded.email); // 🔥 add this for contact
+      headers.set("user-email", decoded.email); // 🔥 add this for contac
 
       // Only restrict role for product
       if (pathname.startsWith("/api/product")) {

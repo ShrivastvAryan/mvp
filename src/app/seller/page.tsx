@@ -15,33 +15,11 @@ import ProductManage from "@/components/seller/ManageProducts";
 import Link from "next/link";
 
 const Seller = () => {
-  const stats = [
-    {
-      title: "Total Products",
-      value: 24,
-      icon: <Package size={18} />,
-    },
-    {
-      title: "Total Orders",
-      value: 132,
-      icon: <ShoppingCart size={18} />,
-    },
-    {
-      title: "Revenue",
-      value: "₹ 1,45,000",
-      icon: <IndianRupee size={18} />,
-    },
-    {
-      title: "Growth",
-      value: "+18%",
-      icon: <TrendingUp size={18} />,
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-primary text-secondary px-10 py-8 space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 items-start justify-between">
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight">
             Seller <span className="opacity-60 italic">Dashboard</span>

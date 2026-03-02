@@ -43,7 +43,7 @@ const Page = () => {
     }));
   };
 
-  // 🔥 TanStack Mutation
+  // TanStack Mutation
   const registerMutation = useMutation({
     mutationFn: async () => {
       const res = await fetch("/api/register", {
@@ -81,9 +81,9 @@ const Page = () => {
         });
       }
       login({ email: formData.email, role: userType });
-      // 🔥 Redirect based on role
+      //  Redirect based on role
       if (userType === "seller") {
-        router.push("/seller/dashboard");
+        router.push("/seller");
       } else {
         router.push("/");
       }

@@ -16,6 +16,30 @@ export const fetchProducts = async (): Promise<Product[]> => {
   return data.products;
 };
 
+export const fetchProductsBySeller = async (): Promise<Product[]> => {
+  console.log("Calling /api/product...");
+
+  const res = await fetch("/api/product", {
+    credentials: "include",
+  });
+
+  console.log("Response status:", res.status);
+
+  const data = await res.json();
+
+  console.log("Response data:", data);
+
+  if (!res.ok) {
+    console.error("Fetch failed:", data);
+    throw new Error(data?.message || "Failed to fetch");
+  }
+
+  console.log("Products returned:", data.products);
+
+  return data.products;
+};
+
+
 export const fetchProductById = async (id: string,category: string): Promise<Product> => {
   const res = await fetch(`/api/get-product/${category}/${id}/`);
   const data = await res.json();
